@@ -1,0 +1,94 @@
+/* Fundo igual ao cadastro */
+body {
+  background: linear-gradient(135deg, #5d7bff, #8357e5);
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card principal */
+.login-wrapper {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  padding: 34px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Título */
+.login-wrapper h1 {
+  text-align: center;
+  margin-bottom: 26px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Labels */
+.login-wrapper label {
+  font-weight: 600;
+  margin-top: 14px;
+  display: block;
+  color: #444;
+}
+
+/* Inputs */
+.login-wrapper input {
+  width: 100%;
+  padding: 13px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid #d0d0d0;
+  background: #fafafa;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.login-wrapper input:focus {
+  border-color: #5d7bff;
+  background: #fff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(93, 123, 255, 0.25);
+}
+
+/* Botão */
+.login-wrapper button {
+  width: 100%;
+  margin-top: 28px;
+  padding: 14px;
+  background: #4caf50;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 17px;
+  transition: 0.25s;
+}
+
+.login-wrapper button:hover {
+  background: #449c47;
+  transform: translateY(-1px);
+}
+
+/* Link */
+.login-wrapper .cadastro-link {
+  display: block;
+  text-align: center;
+  margin-top: 18px;
+  font-size: 15px;
+  color: #4caf50;
+}
+
+.login-wrapper .cadastro-link:hover {
+  color: #388e3c;
+}
+
+/* Animação */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
