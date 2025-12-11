@@ -1,0 +1,214 @@
+/* ======================================
+   CLIENTES
+======================================== */
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.page h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 30px;
+}
+
+/* ======================================
+   Lista de Clientes
+======================================== */
+.page ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.page li {
+  background: white;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 4px solid #4caf50;
+}
+
+.page li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Cliente Info */
+.cliente-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cliente-nome {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.cliente-contato {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Botões de Ação */
+.cliente-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-editar,
+.btn-deletar {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-editar {
+  background: #2196f3;
+  color: white;
+}
+
+.btn-editar:hover {
+  background: #1976d2;
+  transform: translateY(-2px);
+}
+
+.btn-deletar {
+  background: #f44336;
+  color: white;
+}
+
+.btn-deletar:hover {
+  background: #d32f2f;
+  transform: translateY(-2px);
+}
+
+/* ======================================
+   Mensagem Vazia
+======================================== */
+.page > p {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ======================================
+   Botão Adicionar Cliente
+======================================== */
+.btn-adicionar {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-adicionar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.btn-adicionar:before {
+  content: "+";
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ======================================
+   Tabela de Clientes (alternativa)
+======================================== */
+.clientes-table {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.clientes-table thead {
+  background: #f5f6fa;
+}
+
+.clientes-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.clientes-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.clientes-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.clientes-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ======================================
+   Responsivo
+======================================== */
+@media (max-width: 768px) {
+  .page {
+    padding: 20px 15px;
+  }
+
+  .page h1 {
+    font-size: 24px;
+  }
+
+  .page li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .cliente-acoes {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .btn-editar,
+  .btn-deletar {
+    flex: 1;
+  }
+
+  .clientes-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

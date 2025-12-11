@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/geral.css";
+import "../styles/public.css";
 
 export default function PublicSucesso() {
   const location = useLocation();

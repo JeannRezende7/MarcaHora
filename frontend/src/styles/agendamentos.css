@@ -1,0 +1,336 @@
+/* ======================================
+   AGENDAMENTOS
+======================================== */
+
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.page h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 30px;
+}
+
+/* ======================================
+   Filtros e Controles
+======================================== */
+.agendamentos-controles {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filtro-data {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filtro-data label {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.filtro-data input {
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border 0.2s;
+}
+
+.filtro-data input:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.btn-hoje {
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-hoje:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+}
+
+/* ======================================
+   Lista de Agendamentos
+======================================== */
+.agendamentos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.agendamento-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: center;
+  transition: all 0.2s;
+  border-left: 4px solid #667eea;
+}
+
+.agendamento-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Horário */
+.agendamento-horario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f5f6fa;
+  padding: 16px;
+  border-radius: 10px;
+  min-width: 100px;
+}
+
+.agendamento-hora {
+  font-size: 24px;
+  font-weight: 700;
+  color: #667eea;
+  line-height: 1;
+}
+
+.agendamento-data {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* Informações */
+.agendamento-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.agendamento-cliente {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.agendamento-servico {
+  font-size: 14px;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.agendamento-detalhes {
+  font-size: 13px;
+  color: #777;
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.agendamento-detalhes span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Status Badge */
+.agendamento-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.badge {
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-confirmado {
+  background: #4caf50;
+  color: white;
+}
+
+.badge-pendente {
+  background: #ff9800;
+  color: white;
+}
+
+.badge-cancelado {
+  background: #f44336;
+  color: white;
+}
+
+.badge-concluido {
+  background: #2196f3;
+  color: white;
+}
+
+/* Ações */
+.agendamento-acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.btn-visualizar {
+  background: #e3f2fd;
+  color: #2196f3;
+}
+
+.btn-visualizar:hover {
+  background: #2196f3;
+  color: white;
+  transform: scale(1.1);
+}
+
+.btn-cancelar {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.btn-cancelar:hover {
+  background: #f44336;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* ======================================
+   Mensagem Vazia
+======================================== */
+.agendamentos-vazio {
+  background: white;
+  padding: 80px 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.agendamentos-vazio-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.agendamentos-vazio p {
+  font-size: 18px;
+  color: #999;
+}
+
+/* ======================================
+   Resumo do Dia
+======================================== */
+.resumo-dia {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.resumo-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.resumo-numero {
+  font-size: 36px;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 8px;
+}
+
+.resumo-label {
+  font-size: 14px;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ======================================
+   Responsivo
+======================================== */
+@media (max-width: 768px) {
+  .page {
+    padding: 20px 15px;
+  }
+
+  .page h1 {
+    font-size: 24px;
+  }
+
+  .agendamentos-controles {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtro-data {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .agendamento-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .agendamento-horario {
+    width: 100%;
+  }
+
+  .agendamento-status {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .agendamento-detalhes {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .resumo-dia {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

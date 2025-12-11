@@ -66,7 +66,7 @@ export default function Configuracoes() {
 
     async function carregar() {
       try {
-        const resp = await api.get(`/configuracoes/${lojaId}`)
+        const resp = await api.get(`/api/configuracoes/${lojaId}`)
         const cfg = resp.data
 
         setInfoLoja({
@@ -113,7 +113,7 @@ export default function Configuracoes() {
   async function salvarInfoLoja(e) {
     e.preventDefault()
     try {
-      await api.put(`/configuracoes/${lojaId}/info`, infoLoja)
+      await api.put(`/api/configuracoes/${lojaId}/info`, infoLoja)
 
       atualizarLojaNoContexto(infoLoja.nome)
 
@@ -130,7 +130,7 @@ export default function Configuracoes() {
   async function salvarHorarios(e) {
     e.preventDefault()
     try {
-      await api.put(`/configuracoes/${lojaId}/horarios`, {
+      await api.put(`/api/configuracoes/${lojaId}/horarios`, {
         abertura: horarios.abertura,
         fechamento: horarios.fechamento,
         intervalo: horarios.intervalo,
@@ -151,7 +151,7 @@ export default function Configuracoes() {
   async function salvarCamposCliente(e) {
     e.preventDefault()
     try {
-      await api.put(`/configuracoes/${lojaId}/campos-obrigatorios`, camposCliente)
+      await api.put(`/api/configuracoes/${lojaId}/campos-obrigatorios`, camposCliente)
       alert("Configuração salva!")
     } catch (err) {
       console.error(err)
@@ -165,7 +165,7 @@ export default function Configuracoes() {
   async function salvarModos(e) {
     e.preventDefault()
     try {
-      await api.put(`/configuracoes/${lojaId}/modos`, configModos)
+      await api.put(`/api/configuracoes/${lojaId}/modos`, configModos)
       alert("Modos salvos!")
     } catch (err) {
       console.error(err)
@@ -185,7 +185,7 @@ export default function Configuracoes() {
     }
 
     try {
-      const resp = await api.post(`/configuracoes/${lojaId}/campos-personalizados`, novoCampo)
+      const resp = await api.post(`/api/configuracoes/${lojaId}/campos-personalizados`, novoCampo)
       setCamposPersonalizados((old) => [...old, resp.data])
 
       setNovoCampo({ pergunta: "", tipoResposta: "texto", obrigatorio: false })
@@ -200,7 +200,7 @@ export default function Configuracoes() {
   // ===================================================
   async function removerCampo(id) {
     try {
-      await api.delete(`/configuracoes/${lojaId}/campos-personalizados/${id}`)
+      await api.delete(`/api/configuracoes/${lojaId}/campos-personalizados/${id}`)
 
       setCamposPersonalizados((lista) => lista.filter((c) => c.id !== id))
     } catch (err) {

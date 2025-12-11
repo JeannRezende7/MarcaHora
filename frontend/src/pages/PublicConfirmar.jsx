@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
-import "../styles/geral.css";
+import "../styles/public.css";
 
 export default function PublicConfirmar() {
   const { lojaId, servicoId, dataHora } = useParams();

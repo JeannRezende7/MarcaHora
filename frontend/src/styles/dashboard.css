@@ -1,0 +1,262 @@
+/* ======================================
+   DASHBOARD
+======================================== */
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.titulo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 30px;
+}
+
+/* ======================================
+   KPI Cards (Indicadores)
+======================================== */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: white;
+  transition: transform 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-5px);
+}
+
+.kpi-title {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kpi-number {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.kpi-input {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-size: 14px;
+  width: 100%;
+  cursor: text;
+}
+
+.kpi-input::selection {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.kpi-card small {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: -6px;
+}
+
+/* ======================================
+   Seção de Agendamentos
+======================================== */
+.section {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  margin-bottom: 30px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.btn-light {
+  padding: 10px 20px;
+  background: #f5f6fa;
+  border: none;
+  border-radius: 8px;
+  color: #667eea;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-light:hover {
+  background: #e8e9f3;
+  transform: translateY(-2px);
+}
+
+.card-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #999;
+  text-align: center;
+}
+
+.card-empty img {
+  width: 80px;
+  height: 80px;
+  opacity: 0.3;
+  margin-bottom: 15px;
+}
+
+.card-empty p {
+  font-size: 16px;
+  color: #aaa;
+}
+
+/* ======================================
+   Grid Inferior (Ações e Dicas)
+======================================== */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.bottom-grid .card {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.bottom-grid .card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Botões de Ações */
+.btn-purple,
+.btn-green,
+.btn-white {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+
+.btn-purple {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-purple:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+}
+
+.btn-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.btn-white {
+  background: white;
+  color: #667eea;
+  border: 2px solid #e8e9f3;
+}
+
+.btn-white:hover {
+  background: #f5f6fa;
+  border-color: #667eea;
+  transform: translateY(-2px);
+}
+
+/* Lista de Dicas */
+.tips {
+  list-style: none;
+  padding: 0;
+}
+
+.tips li {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #555;
+  font-size: 15px;
+}
+
+.tips li:last-child {
+  border-bottom: none;
+}
+
+/* ======================================
+   Responsivo
+======================================== */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 20px 15px;
+  }
+
+  .titulo {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .kpi-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .kpi-number {
+    font-size: 36px;
+  }
+
+  .section {
+    padding: 20px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}

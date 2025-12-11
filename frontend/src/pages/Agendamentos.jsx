@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import "../styles/agendamentos.css"
 
 export default function Agendamentos() {
   const { lojaId } = useAuth();

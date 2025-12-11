@@ -15,6 +15,15 @@ export function AuthProvider({ children }) {
     setUsuario(null);
   }
 
+  function atualizarLojaNoContexto(novoNome) {
+    if (usuario) {
+      setUsuario({
+        ...usuario,
+        nomeLoja: novoNome
+      });
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -22,6 +31,7 @@ export function AuthProvider({ children }) {
         lojaId: usuario?.lojaId ?? null,
         loginRequest,
         logout,
+        atualizarLojaNoContexto,
       }}
     >
       {children}

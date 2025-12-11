@@ -81,7 +81,7 @@ export default function App() {
 
           {/* páginas públicas de agendamento */}
           <Route path="/public/loja/:id" element={<PublicLoja />} />
-          <Route path="/public/loja/:lojaId/servico/:servicoId" element={<PublicHorarios />} />
+          <Route path="/public/horarios/:lojaId/:servicoId" element={<PublicHorarios />} />
           <Route path="/public/confirmar/:lojaId/:servicoId/:dataHora" element={<PublicConfirmar />} />
           <Route path="/public/sucesso" element={<PublicSucesso />} />
         </Routes>
