@@ -28,10 +28,10 @@ public class PublicAgendamentoController {
     private final HorarioService horarioService;
 
     public PublicAgendamentoController(LojaRepository lojaRepository,
-                                       ServicoRepository servicoRepository,
-                                       ClienteRepository clienteRepository,
-                                       AgendamentoRepository agendamentoRepository,
-                                       HorarioService horarioService) {
+            ServicoRepository servicoRepository,
+            ClienteRepository clienteRepository,
+            AgendamentoRepository agendamentoRepository,
+            HorarioService horarioService) {
         this.lojaRepository = lojaRepository;
         this.servicoRepository = servicoRepository;
         this.clienteRepository = clienteRepository;
@@ -53,8 +53,7 @@ public class PublicAgendamentoController {
         if (Boolean.FALSE.equals(loja.getAtiva())) {
             return ResponseEntity.ok(Map.of(
                     "status", "offline",
-                    "mensagem", "Loja está temporariamente indisponível."
-            ));
+                    "mensagem", "Loja está temporariamente indisponível."));
         }
 
         List<Servico> servicos = Collections.emptyList();
@@ -77,8 +76,7 @@ public class PublicAgendamentoController {
     public ResponseEntity<?> horariosDisponiveis(
             @RequestParam Long lojaId,
             @RequestParam(required = false) Long servicoId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
-    ) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
         Optional<Loja> optLoja = lojaRepository.findById(lojaId);
         if (optLoja.isEmpty()) {
             return ResponseEntity.badRequest().body("Loja não encontrada");
@@ -97,8 +95,7 @@ public class PublicAgendamentoController {
 
         return ResponseEntity.ok(Map.of(
                 "data", data,
-                "horarios", horarios
-        ));
+                "horarios", horarios));
     }
 
     // =======================
@@ -171,9 +168,12 @@ public class PublicAgendamentoController {
                 clienteRepository.save(cliente);
             } else {
                 // Atualiza dados básicos, se vierem preenchidos
-                if (!nome.isEmpty()) cliente.setNome(nome);
-                if (!telefone.isEmpty()) cliente.setTelefone(telefone);
-                if (!email.isEmpty()) cliente.setEmail(email);
+                if (!nome.isEmpty())
+                    cliente.setNome(nome);
+                if (!telefone.isEmpty())
+                    cliente.setTelefone(telefone);
+                if (!email.isEmpty())
+                    cliente.setEmail(email);
                 clienteRepository.save(cliente);
             }
 
@@ -199,4 +199,22 @@ public class PublicAgendamentoController {
             return ResponseEntity.status(500).body("Erro ao criar agendamento: " + e.getMessage());
         }
     }
+
+    public static class CampoPersonalizadoRespostaDTO {
+        public Long campoId;
+        public String resposta;
+    }
+
+    public static class CriarAgendamentoRequest {
+        public Long lojaId;
+        public Long servicoId; // opcional se loja não usa serviços
+        public Long profissionalId; // opcional se loja não usa profissionais
+        public String dataHora; // ISO string
+        public String nome;
+        public String telefone;
+        public String email;
+        public String observacoes;
+        public java.util.List<CampoPersonalizadoRespostaDTO> camposPersonalizados;
+    }
+
 }

@@ -21,6 +21,11 @@ public class Agendamento {
     @JoinColumn(name = "servico_id")
     private Servico servico;
 
+    // NOVO → profissional pode ser opcional
+    @ManyToOne
+    @JoinColumn(name = "profissional_id")
+    private Profissional profissional;
+
     private LocalDateTime dataHora;
 
     @Column(length = 20)

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import publicApi from "../services/publicApi";
+import api from "../services/api";
+import "../styles/geral.css";
 
 export default function PublicHorarios() {
   const { lojaId, servicoId } = useParams();
@@ -8,88 +9,161 @@ export default function PublicHorarios() {
 
   const [loja, setLoja] = useState(null);
   const [servico, setServico] = useState(null);
+  const [profissionais, setProfissionais] = useState([]);
+  const [profissionalSelecionado, setProfissionalSelecionado] = useState(null);
 
-  const [data, setData] = useState(() => {
-    const hoje = new Date();
-    return hoje.toISOString().substring(0, 10);
-  });
-
+  const [data, setData] = useState(new Date());
   const [horarios, setHorarios] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
+  // Converte para yyyy-MM-dd
+  function formatISO(date) {
+    return date.toISOString().split("T")[0];
+  }
+
+  function addDays(dt, amount) {
+    const copy = new Date(dt);
+    copy.setDate(copy.getDate() + amount);
+    return copy;
+  }
+
+  // Carregar dados da loja + serviço (se houver)
   useEffect(() => {
-    carregarLoja();
-  }, []);
+    async function carregar() {
+      try {
+        const r = await api.get(`/public/loja/${lojaId}`);
+        const dataLoja = r.data.loja;
+        setLoja(dataLoja);
 
-  async function carregarLoja() {
-    try {
-      const resp = await publicApi.get(`/public/loja/${lojaId}`);
-      setLoja(resp.data.loja);
+        if (dataLoja.usaServicos && servicoId !== "0") {
+          const s = await api.get(`/api/servicos/${servicoId}`);
+          setServico(s.data);
+        }
 
-      if (Number(servicoId) !== 0) {
-        const serv = resp.data.servicos.find((s) => s.id == servicoId);
-        setServico(serv);
+        if (dataLoja.usaProfissionais) {
+          const p = await api.get(`/public/profissionais/${lojaId}`);
+          setProfissionais(p.data || []);
+        }
+
+        setCarregando(false);
+      } catch (e) {
+        console.error("Erro ao carregar loja ou serviço", e);
+        setCarregando(false);
       }
-    } catch (e) {
-      console.error(e);
-      alert("Erro ao carregar dados da loja.");
     }
 
-    carregarHorarios(data);
-  }
+    carregar();
+  }, [lojaId, servicoId]);
 
-  async function carregarHorarios(dataEscolhida) {
+  // Buscar horarios do dia
+  async function carregarHorarios(dia) {
+    if (!loja) return;
+
+    const params = {
+      lojaId,
+      data: formatISO(dia)
+    };
+
+    if (loja.usaServicos) {
+      params.servicoId = servicoId;
+    }
+
+    if (loja.usaProfissionais && profissionalSelecionado) {
+      params.profissionalId = profissionalSelecionado;
+    }
+
     try {
-      const url = `/public/agendamentos/horarios?lojaId=${lojaId}&servicoId=${servicoId}&data=${dataEscolhida}`;
-      const resp = await publicApi.get(url);
-      setHorarios(resp.data.horarios);
+      const resp = await api.get("/public/agendamentos/horarios", { params });
+      setHorarios(resp.data.horarios || []);
     } catch (e) {
-      console.error(e);
-      alert("Erro ao buscar horários disponíveis.");
+      console.error("Erro ao buscar horários", e);
+      setHorarios([]);
     }
-
-    setCarregando(false);
   }
 
-  function escolherHorario(h) {
-    const dataHoraFinal = `${data}T${h}:00`;
-    navigate(`/public/confirmar/${lojaId}/${servicoId}/${dataHoraFinal}`);
+  // Recarregar horários quando mudar data ou profissional
+  useEffect(() => {
+    if (loja) carregarHorarios(data);
+  }, [data, profissionalSelecionado, loja]);
+
+  if (carregando) return <div className="carregando">Carregando...</div>;
+  if (!loja) return <div>Loja não encontrada</div>;
+
+  // Verificar dia permitido
+  function diaPermitido(date) {
+    const dow = date.getDay(); // 0 = domingo
+    const mapa = { 0: 7, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6 };
+    const dia = mapa[dow]; // converte para padrão backend
+
+    if (!loja.diasFuncionamento || loja.diasFuncionamento.length === 0)
+      return true;
+
+    return loja.diasFuncionamento.includes(String(dia));
   }
 
-  if (carregando || !loja) return <div>Carregando...</div>;
+  const isoData = formatISO(data);
 
   return (
     <div className="public-container">
-      <h1>{loja.nome}</h1>
 
-      {servico && (
-        <p>
-          <strong>Serviço: </strong> {servico.nome}
-        </p>
+      <h1>Escolha o Horário</h1>
+      {servico && <h2>{servico.nome}</h2>}
+
+      {/* PROFISSIONAIS */}
+      {loja.usaProfissionais && (
+        <>
+          <h3>Profissional</h3>
+          <select
+            value={profissionalSelecionado || ""}
+            onChange={(e) => setProfissionalSelecionado(e.target.value)}
+            className="select-prof"
+          >
+            <option value="">Selecione</option>
+            {profissionais.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.nome}
+              </option>
+            ))}
+          </select>
+        </>
       )}
 
-      <div className="box-calendario">
-        <label>Selecione a data:</label>
-        <input
-          type="date"
-          value={data}
-          onChange={(e) => {
-            setData(e.target.value);
-            carregarHorarios(e.target.value);
-          }}
-        />
+      {/* CALENDÁRIO SIMPLES */}
+      <div className="calendar-nav">
+        <button onClick={() => setData(addDays(data, -1))}>◀</button>
+        <span>{data.toLocaleDateString()}</span>
+        <button onClick={() => setData(addDays(data, 1))}>▶</button>
       </div>
 
-      <h2>Horários disponíveis</h2>
+      {!diaPermitido(data) && (
+        <div className="alert">
+          Loja fechada neste dia. Escolha outro.
+        </div>
+      )}
 
-      {horarios.length === 0 && <p>Nenhum horário disponível.</p>}
+      {/* HORÁRIOS */}
+      <h3>Horários Disponíveis</h3>
 
-      <div className="lista-horarios">
-        {horarios.map((h) => (
-          <button key={h} className="horario-btn" onClick={() => escolherHorario(h)}>
-            {h}
-          </button>
-        ))}
+      <div className="horarios-grid">
+        {horarios.length === 0 && (
+          <p className="nenhum">Nenhum horário disponível.</p>
+        )}
+
+        {horarios.map((h) => {
+          const hora = h.split("T")[1].substring(0, 5); // ex: 14:00
+
+          return (
+            <button
+              key={h}
+              className="horario-btn"
+              onClick={() =>
+                navigate(`/public/confirmar/${lojaId}/${servicoId}/${h}`)
+              }
+            >
+              {hora}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

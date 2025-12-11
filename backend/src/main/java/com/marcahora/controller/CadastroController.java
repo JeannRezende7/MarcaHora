@@ -11,7 +11,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cadastro")
-@CrossOrigin(origins = "*")
 public class CadastroController {
 
     private final LojaRepository lojaRepository;
@@ -28,8 +27,8 @@ public class CadastroController {
         String nome = (String) body.get("nome");
         String email = (String) body.get("email");
         String telefone = (String) body.get("telefone");
-        Boolean usaProfissionais = (Boolean) body.get("usaProfissionais");
-        Boolean temServicos = (Boolean) body.get("temServicos");
+        Boolean usaProfissionais = (Boolean) body.getOrDefault("usaProfissionais", false);
+        Boolean temServicos = (Boolean) body.getOrDefault("temServicos", true);
         String senha = (String) body.get("senha");
 
         if (nome == null || nome.isBlank()) {
@@ -44,19 +43,32 @@ public class CadastroController {
             return ResponseEntity.badRequest().body(Map.of("erro", "Senha deve ter pelo menos 6 caracteres"));
         }
 
-        // Cria a loja
+        // Cria a loja com defaults seguros
         Loja loja = new Loja();
         loja.setNome(nome);
         loja.setEmail(email);
         loja.setTelefone(telefone);
         loja.setAtiva(true);
-        loja.setUsaProfissionais(Boolean.TRUE.equals(usaProfissionais));
-        loja.setUsaServicos(Boolean.TRUE.equals(temServicos));
+
+        loja.setUsaProfissionais(usaProfissionais);
+        loja.setUsaServicos(temServicos);
         loja.setTipoNegocio("servico");
+
+        // CONFIGS ESSENCIAIS (antes eram null!)
+        loja.setHorarioAbertura("09:00");
+        loja.setHorarioFechamento("18:00");
+        loja.setIntervaloAtendimento(30);
+        loja.setDiasFuncionamento("1,2,3,4,5");
+        loja.setTempoBufferMinutos(0);
+
+        loja.setObrigarNome(true);
+        loja.setObrigarTelefone(true);
+        loja.setObrigarEmail(false);
+        loja.setMostrarObservacoes(true);
 
         Loja lojaSalva = lojaRepository.save(loja);
 
-        // Cria o usuário administrador da loja
+        // Criar usuário administrador
         Usuario usuario = new Usuario();
         usuario.setNome("Admin " + lojaSalva.getNome());
         usuario.setEmail(email);

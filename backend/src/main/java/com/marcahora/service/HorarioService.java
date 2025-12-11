@@ -2,6 +2,7 @@ package com.marcahora.service;
 
 import com.marcahora.model.Agendamento;
 import com.marcahora.model.Loja;
+import com.marcahora.model.Profissional;
 import com.marcahora.model.Servico;
 import com.marcahora.repository.AgendamentoRepository;
 import org.springframework.stereotype.Service;
@@ -19,95 +20,150 @@ public class HorarioService {
         this.agendamentoRepository = agendamentoRepository;
     }
 
-    public List<String> gerarHorariosDisponiveis(Loja loja,
-                                                 LocalDate data,
-                                                 Servico servicoOpcional) {
+    // ============================
+    // OVERLOAD — sem profissional
+    // ============================
+    public List<String> gerarHorariosDisponiveis(Loja loja, LocalDate data, Servico servico) {
+        return gerarHorariosDisponiveis(loja, data, servico, null);
+    }
+
+    // ============================
+    // MÉTODO PRINCIPAL
+    // ============================
+    public List<String> gerarHorariosDisponiveis(
+            Loja loja,
+            LocalDate data,
+            Servico servicoOpcional,
+            Profissional profissionalOpcional) {
 
         if (Boolean.FALSE.equals(loja.getAtiva())) {
-            return List.of(); // loja desativada, nada disponível
-        }
-
-        // 1) Verificar se o dia faz parte dos dias de funcionamento
-        if (!diaPermitido(loja, data)) {
             return List.of();
         }
 
-        // 2) Horário de abertura e fechamento
-        LocalTime abre = parseHoraOuPadrao(loja.getHorarioAbertura(), LocalTime.of(9, 0));
-        LocalTime fecha = parseHoraOuPadrao(loja.getHorarioFechamento(), LocalTime.of(18, 0));
+        // --- Dias de funcionamento ---
+        Set<DayOfWeek> diasFuncionamento = parseDiasFuncionamento(loja.getDiasFuncionamento());
+        DayOfWeek dow = data.getDayOfWeek();
 
-        // 3) Intervalo entre slots
-        int intervalo = (loja.getIntervaloAtendimento() != null && loja.getIntervaloAtendimento() > 0)
-                ? loja.getIntervaloAtendimento()
-                : 30;
-
-        // 4) Duração do atendimento
-        int duracaoMin = intervalo;
-        if (Boolean.TRUE.equals(loja.getUsaServicos()) && servicoOpcional != null && servicoOpcional.getDuracaoMinutos() != null) {
-            if (servicoOpcional.getDuracaoMinutos() > 0) {
-                duracaoMin = servicoOpcional.getDuracaoMinutos();
-            }
+        if (!diasFuncionamento.isEmpty() && !diasFuncionamento.contains(dow)) {
+            return List.of();
         }
 
-        // 5) Buffer (antecedência mínima)
-        int bufferMin = (loja.getTempoBufferMinutos() != null && loja.getTempoBufferMinutos() > 0)
-                ? loja.getTempoBufferMinutos()
-                : 0;
+        // --- Abertura / Fechamento ---
+        LocalTime abertura = parseHora(loja.getHorarioAbertura(), LocalTime.of(9, 0));
+        LocalTime fechamento = parseHora(loja.getHorarioFechamento(), LocalTime.of(18, 0));
 
+        if (!fechamento.isAfter(abertura)) {
+            fechamento = abertura.plusHours(1);
+        }
+
+        // --- Intervalo e Buffer ---
+        int intervaloMin = Optional.ofNullable(loja.getIntervaloAtendimento()).orElse(30);
+        int bufferMin = Optional.ofNullable(loja.getTempoBufferMinutos()).orElse(0);
+
+        // Serviço com duração personalizada
+        int duracaoSlot = intervaloMin;
+        if (servicoOpcional != null &&
+                servicoOpcional.getDuracaoMinutos() != null &&
+                servicoOpcional.getDuracaoMinutos() > 0) {
+            duracaoSlot = servicoOpcional.getDuracaoMinutos();
+        }
+
+        LocalDateTime inicioDia = LocalDateTime.of(data, abertura);
+        LocalDateTime fimDia = LocalDateTime.of(data, fechamento);
         LocalDateTime agora = LocalDateTime.now();
-        LocalDateTime minInicioHoje = agora.plusMinutes(bufferMin);
 
-        // 6) Buscar agendamentos já ocupados no dia
-        LocalDateTime inicioDia = data.atStartOfDay();
-        LocalDateTime fimDia = data.atTime(LocalTime.MAX);
+        // ============================
+        // AGENDAMENTOS EXISTENTES
+        // ============================
+        List<Agendamento> agendamentosDoDia;
 
-        List<LocalDateTime> ocupados = agendamentoRepository
-                .findByLojaIdAndDataHoraBetween(loja.getId(), inicioDia, fimDia)
+        if (profissionalOpcional != null &&
+            Boolean.TRUE.equals(loja.getUsaProfissionais())) {
+
+            agendamentosDoDia = agendamentoRepository
+                    .findByLojaIdAndProfissionalIdAndDataHoraBetween(
+                            loja.getId(),
+                            profissionalOpcional.getId(),
+                            inicioDia,
+                            fimDia);
+        } else {
+            agendamentosDoDia = agendamentoRepository
+                    .findByLojaIdAndDataHoraBetween(
+                            loja.getId(), inicioDia, fimDia);
+        }
+
+        List<LocalDateTime> ocupados = agendamentosDoDia
                 .stream()
                 .map(Agendamento::getDataHora)
                 .collect(Collectors.toList());
 
-        List<String> disponiveis = new ArrayList<>();
+        // ============================
+        // GERAR HORÁRIOS
+        // ============================
+        List<String> resultado = new ArrayList<>();
+        LocalDateTime cursor = inicioDia;
 
-        for (LocalTime t = abre; t.plusMinutes(duracaoMin).isBefore(fecha.plusMinutes(1)); t = t.plusMinutes(intervalo)) {
-            LocalDateTime dt = LocalDateTime.of(data, t);
+        while (!cursor.isAfter(fimDia.minusMinutes(duracaoSlot))) {
 
-            // pular horários no passado + buffer, se for hoje
-            if (data.isEqual(agora.toLocalDate()) && dt.isBefore(minInicioHoje)) {
+            // Bloqueia horários passados + buffer
+            boolean horarioPassado =
+                    (!cursor.toLocalDate().isAfter(agora.toLocalDate())) &&
+                            cursor.isBefore(agora.plusMinutes(bufferMin));
+
+            if (horarioPassado) {
+                cursor = cursor.plusMinutes(intervaloMin);
                 continue;
             }
 
-            // pular se já ocupado
-            if (ocupados.contains(dt)) {
-                continue;
+            // Verifica conflito
+            boolean ocupado = false;
+            for (LocalDateTime ag : ocupados) {
+                if (ag.equals(cursor)) {
+                    ocupado = true;
+                    break;
+                }
             }
 
-            disponiveis.add(t.toString()); // "09:00", "09:30"...
+            if (!ocupado) {
+                resultado.add(cursor.toLocalTime().toString()); // Ex: "14:30"
+            }
+
+            cursor = cursor.plusMinutes(intervaloMin);
         }
 
-        return disponiveis;
+        return resultado;
     }
 
-    private boolean diaPermitido(Loja loja, LocalDate data) {
-        String diasStr = loja.getDiasFuncionamento();
-        if (diasStr == null || diasStr.isBlank()) {
-            return true; // se não configurou, assume todo dia
-        }
-        int diaSemana = data.getDayOfWeek().getValue(); // 1..7 (segunda..domingo)
-        String code = String.valueOf(diaSemana);
+    // =====================================================
+    // MÉTODOS AUXILIARES (agora funcionando 100%)
+    // =====================================================
 
-        return Arrays.stream(diasStr.split(","))
-                .map(String::trim)
-                .anyMatch(s -> s.equals(code));
-    }
+    /** Converte "09:00" → LocalTime */
+    private LocalTime parseHora(String valor, LocalTime padrao) {
+        if (valor == null || valor.isBlank()) return padrao;
 
-    private LocalTime parseHoraOuPadrao(String texto, LocalTime padrao) {
         try {
-            if (texto != null && !texto.isBlank()) {
-                return LocalTime.parse(texto);
-            }
-        } catch (Exception ignored) {
+            return LocalTime.parse(valor);
+        } catch (Exception e) {
+            return padrao;
         }
-        return padrao;
+    }
+
+    /** Converte "1,2,3,4" → Set<DayOfWeek> */
+    private Set<DayOfWeek> parseDiasFuncionamento(String dias) {
+        if (dias == null || dias.isBlank()) return Set.of();
+
+        try {
+            List<String> list = Arrays.asList(dias.split(","));
+
+            return list.stream()
+                    .map(String::trim)
+                    .map(Integer::parseInt)
+                    .map(i -> DayOfWeek.of(i))
+                    .collect(Collectors.toSet());
+
+        } catch (Exception e) {
+            return Set.of();
+        }
     }
 }

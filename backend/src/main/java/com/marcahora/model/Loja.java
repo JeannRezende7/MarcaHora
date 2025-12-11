@@ -45,6 +45,7 @@ public class Loja {
     private Boolean obrigarNome;
     private Boolean obrigarTelefone;
     private Boolean obrigarEmail;
+    private Boolean mostrarObservacoes;
 
     @PrePersist
     @PreUpdate
@@ -78,6 +79,9 @@ public class Loja {
         }
         if (obrigarEmail == null) {
             obrigarEmail = Boolean.FALSE;
+        }
+        if (mostrarObservacoes == null) {
+            mostrarObservacoes = Boolean.TRUE;
         }
         if (ativa == null) {
             ativa = Boolean.TRUE;
