@@ -82,11 +82,6 @@ export default function Cadastro() {
         onChange={(e) => setTelefone(e.target.value)}
       />
 
-      <label>Tipo de Negócio *</label>
-      <select defaultValue="servicos">
-        <option value="servicos">Serviços (Salão, Clínica, Barbearia)</option>
-      </select>
-
       <label>Usa profissionais específicos?</label>
       <div className="radio-group">
         <div className="radio-option">

@@ -8,7 +8,6 @@ import "./styles/geral.css"
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Agendamentos from './pages/Agendamentos'
-import Agenda from './pages/Agenda'
 import Clientes from './pages/Clientes'
 import Servicos from './pages/Servicos'
 import Profissionais from './pages/Profissionais'
@@ -48,12 +47,6 @@ export default function App() {
                 className={({ isActive }) => isActive ? 'active' : ''}
               >
                 Agendamentos
-              </NavLink>
-              <NavLink 
-                to="/agenda"
-                className={({ isActive }) => isActive ? 'active' : ''}
-              >
-                Agenda
               </NavLink>
               <NavLink 
                 to="/servicos"
@@ -102,10 +95,6 @@ export default function App() {
 
           <Route path="/agendamentos" element={
             <PrivateRoute><Agendamentos /></PrivateRoute>
-          }/>
-
-          <Route path="/agenda" element={
-            <PrivateRoute><Agenda /></PrivateRoute>
           }/>
 
           <Route path="/clientes" element={

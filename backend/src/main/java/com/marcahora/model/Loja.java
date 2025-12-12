@@ -41,11 +41,16 @@ public class Loja {
     private Boolean usaProfissionais;   // true = tem profissional
     private String tipoNegocio;         // "servico", "reserva", etc.
 
-    // CAMPOS OBRIGATÓRIOS DO CLIENTE
+    // CAMPOS VISÍVEIS DO CLIENTE (controla se aparece no formulário)
+    private Boolean mostrarNome;
+    private Boolean mostrarTelefone;
+    private Boolean mostrarEmail;
+    private Boolean mostrarObservacoes;
+    
+    // CAMPOS OBRIGATÓRIOS DO CLIENTE (quando visível, se é required)
     private Boolean obrigarNome;
     private Boolean obrigarTelefone;
     private Boolean obrigarEmail;
-    private Boolean mostrarObservacoes;
 
     @PrePersist
     @PreUpdate
@@ -71,6 +76,18 @@ public class Loja {
         if (usaProfissionais == null) {
             usaProfissionais = Boolean.FALSE;
         }
+        if (mostrarNome == null) {
+            mostrarNome = Boolean.TRUE;
+        }
+        if (mostrarTelefone == null) {
+            mostrarTelefone = Boolean.TRUE;
+        }
+        if (mostrarEmail == null) {
+            mostrarEmail = Boolean.TRUE;
+        }
+        if (mostrarObservacoes == null) {
+            mostrarObservacoes = Boolean.TRUE;
+        }
         if (obrigarNome == null) {
             obrigarNome = Boolean.TRUE;
         }
@@ -79,9 +96,6 @@ public class Loja {
         }
         if (obrigarEmail == null) {
             obrigarEmail = Boolean.FALSE;
-        }
-        if (mostrarObservacoes == null) {
-            mostrarObservacoes = Boolean.TRUE;
         }
         if (ativa == null) {
             ativa = Boolean.TRUE;

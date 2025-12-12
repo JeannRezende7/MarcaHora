@@ -240,6 +240,19 @@ export default function PublicHorarios() {
                 className="btn-nav" 
                 onClick={() => setData(addDays(data, -1))}
                 title="Dia anterior"
+                style={{
+                  background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
+                  border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
+                  color: loja.corPrimaria || '#667eea'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = loja.corPrimaria || '#667eea';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
+                  e.currentTarget.style.color = loja.corPrimaria || '#667eea';
+                }}
               >
                 ◀
               </button>
@@ -247,13 +260,39 @@ export default function PublicHorarios() {
                 className="btn-nav"
                 onClick={() => setData(new Date())}
                 title="Hoje"
+                style={{
+                  background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
+                  border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
+                  color: loja.corPrimaria || '#667eea'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = loja.corPrimaria || '#667eea';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
+                  e.currentTarget.style.color = loja.corPrimaria || '#667eea';
+                }}
               >
-                •
+                📅
               </button>
               <button 
                 className="btn-nav"
                 onClick={() => setData(addDays(data, 1))}
                 title="Próximo dia"
+                style={{
+                  background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
+                  border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
+                  color: loja.corPrimaria || '#667eea'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = loja.corPrimaria || '#667eea';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
+                  e.currentTarget.style.color = loja.corPrimaria || '#667eea';
+                }}
               >
                 ▶
               </button>
@@ -310,6 +349,23 @@ export default function PublicHorarios() {
                       key={idx}
                       className="horario-option"
                       onClick={() => selecionarHorario(horarioStr)}
+                      style={{
+                        background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
+                        border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
+                        color: '#333'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = loja.corPrimaria || '#667eea';
+                        e.currentTarget.style.border = `2px solid ${loja.corPrimaria || '#667eea'}`;
+                        e.currentTarget.style.color = 'white';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
+                        e.currentTarget.style.border = `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`;
+                        e.currentTarget.style.color = '#333';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}
                     >
                       {horarioStr}
                     </button>
@@ -323,7 +379,18 @@ export default function PublicHorarios() {
           <button 
             className="btn-voltar" 
             onClick={() => navigate(`/public/loja/${lojaId}`)}
-            style={{ marginTop: '30px' }}
+            style={{ 
+              marginTop: '30px',
+              background: 'transparent',
+              border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
+              color: loja.corPrimaria || '#667eea'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}10` : '#f5f6fa';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
           >
             ← Voltar
           </button>

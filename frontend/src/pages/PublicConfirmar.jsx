@@ -77,13 +77,13 @@ export default function PublicConfirmar() {
     setErro("");
 
     // Validações conforme configuração da loja
-    if (loja.obrigarNome && nome.trim() === "") {
+    if (loja.mostrarNome && loja.obrigarNome && nome.trim() === "") {
       return setErro("O nome é obrigatório.");
     }
-    if (loja.obrigarTelefone && telefone.trim() === "") {
+    if (loja.mostrarTelefone && loja.obrigarTelefone && telefone.trim() === "") {
       return setErro("O telefone é obrigatório.");
     }
-    if (loja.obrigarEmail && email.trim() === "") {
+    if (loja.mostrarEmail && loja.obrigarEmail && email.trim() === "") {
       return setErro("O e-mail é obrigatório.");
     }
 
@@ -255,9 +255,9 @@ export default function PublicConfirmar() {
           <form onSubmit={confirmarAgendamento} className="form-public">
 
             {/* Nome */}
-            {loja.obrigarNome && (
+            {loja.mostrarNome && (
               <div className="form-group-public">
-                <label>👤 Nome completo *</label>
+                <label>👤 Nome completo {loja.obrigarNome && '*'}</label>
                 <input
                   type="text"
                   placeholder="Digite seu nome"
@@ -269,9 +269,9 @@ export default function PublicConfirmar() {
             )}
 
             {/* Telefone */}
-            {loja.obrigarTelefone && (
+            {loja.mostrarTelefone && (
               <div className="form-group-public">
-                <label>📱 Telefone *</label>
+                <label>📱 Telefone {loja.obrigarTelefone && '*'}</label>
                 <input
                   type="tel"
                   placeholder="(00) 00000-0000"
@@ -283,9 +283,9 @@ export default function PublicConfirmar() {
             )}
 
             {/* Email */}
-            {loja.obrigarEmail && (
+            {loja.mostrarEmail && (
               <div className="form-group-public">
-                <label>📧 E-mail *</label>
+                <label>📧 E-mail {loja.obrigarEmail && '*'}</label>
                 <input
                   type="email"
                   placeholder="seu@email.com"

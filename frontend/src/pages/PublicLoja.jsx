@@ -228,7 +228,7 @@ export default function PublicLoja() {
                     }}
                     title="Mês atual"
                   >
-                    •
+                    📅
                   </button>
                   <button
                     className="btn-nav"

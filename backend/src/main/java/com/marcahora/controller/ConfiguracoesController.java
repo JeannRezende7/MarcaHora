@@ -58,13 +58,17 @@ public class ConfiguracoesController {
             body.put("diasFuncionamento", Collections.emptyList());
         }
 
+        body.put("mostrarNome", loja.getMostrarNome());
+        body.put("mostrarTelefone", loja.getMostrarTelefone());
+        body.put("mostrarEmail", loja.getMostrarEmail());
+        body.put("mostrarObservacoes", loja.getMostrarObservacoes());
+        
         body.put("obrigarNome", loja.getObrigarNome());
         body.put("obrigarTelefone", loja.getObrigarTelefone());
         body.put("obrigarEmail", loja.getObrigarEmail());
 
         body.put("usaServicos", loja.getUsaServicos());
         body.put("usaProfissionais", loja.getUsaProfissionais());
-        body.put("mostrarObservacoes", loja.getMostrarObservacoes());
 
         body.put("camposPersonalizados", campos);
 
@@ -155,7 +159,39 @@ public class ConfiguracoesController {
     }
 
     // --------------------------------------------------------------------
-    // 5) Atualizar modos de negócio (serviços, profissionais, observações)
+    // 4.1) Atualizar campos visíveis do cliente
+    // --------------------------------------------------------------------
+    @PutMapping("/{lojaId}/campos-visiveis")
+    public ResponseEntity<?> salvarCamposVisiveis(@PathVariable Long lojaId,
+                                                   @RequestBody Map<String, Object> body) {
+        return lojaRepository.findById(lojaId)
+                .map(loja -> {
+                    Object mostrarNome = body.get("mostrarNome");
+                    Object mostrarEmail = body.get("mostrarEmail");
+                    Object mostrarTelefone = body.get("mostrarTelefone");
+                    Object mostrarObs = body.get("mostrarObservacoes");
+
+                    if (mostrarNome instanceof Boolean) {
+                        loja.setMostrarNome((Boolean) mostrarNome);
+                    }
+                    if (mostrarEmail instanceof Boolean) {
+                        loja.setMostrarEmail((Boolean) mostrarEmail);
+                    }
+                    if (mostrarTelefone instanceof Boolean) {
+                        loja.setMostrarTelefone((Boolean) mostrarTelefone);
+                    }
+                    if (mostrarObs instanceof Boolean) {
+                        loja.setMostrarObservacoes((Boolean) mostrarObs);
+                    }
+
+                    Loja salvo = lojaRepository.save(loja);
+                    return ResponseEntity.ok(salvo);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // --------------------------------------------------------------------
+    // 5) Atualizar modos de negócio (serviços, profissionais)
     // --------------------------------------------------------------------
     @PutMapping("/{lojaId}/modos")
     public ResponseEntity<?> salvarModos(@PathVariable Long lojaId,
@@ -164,16 +200,12 @@ public class ConfiguracoesController {
                 .map(loja -> {
                     Object usaServicos = body.get("usaServicos");
                     Object usaProfissionais = body.get("usaProfissionais");
-                    Object mostrarObs = body.get("mostrarObservacoes");
 
                     if (usaServicos instanceof Boolean) {
                         loja.setUsaServicos((Boolean) usaServicos);
                     }
                     if (usaProfissionais instanceof Boolean) {
                         loja.setUsaProfissionais((Boolean) usaProfissionais);
-                    }
-                    if (mostrarObs instanceof Boolean) {
-                        loja.setMostrarObservacoes((Boolean) mostrarObs);
                     }
 
                     Loja salvo = lojaRepository.save(loja);
