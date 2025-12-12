@@ -145,7 +145,18 @@ export default function PublicHorarios() {
     const dataISO = formatISO(data);
     const dataHoraCompleta = `${dataISO}T${horarioStr}`;
     
-    navigate(`/public/confirmar/${lojaId}/${servicoId}/${encodeURIComponent(dataHoraCompleta)}`);
+    // Passa o profissional se houver selecionado
+    const params = new URLSearchParams();
+    if (profissionalSelecionado) {
+      params.set('profissionalId', profissionalSelecionado);
+    }
+    
+    const query = params.toString();
+    const url = query 
+      ? `/public/confirmar/${lojaId}/${servicoId}/${encodeURIComponent(dataHoraCompleta)}?${query}`
+      : `/public/confirmar/${lojaId}/${servicoId}/${encodeURIComponent(dataHoraCompleta)}`;
+    
+    navigate(url);
   }
 
   return (

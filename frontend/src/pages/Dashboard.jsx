@@ -40,7 +40,7 @@ export default function Dashboard() {
         setEstatisticas({
           totalClientes: respClientes.data?.length || 0,
           totalServicos: respServicos.data?.length || 0,
-          agendamentosMes: 0 // Implementar endpoint no backend se necessário
+          agendamentosMes: 0
         });
       } catch (err) {
         console.log("Erro ao carregar estatísticas:", err);
@@ -225,10 +225,19 @@ export default function Dashboard() {
                   </div>
                   <div style={{ 
                     fontSize: '14px',
-                    color: '#777'
+                    color: '#777',
+                    marginBottom: '4px'
                   }}>
                     {ag.servico?.nome || ag.servico?.descricao || 'Serviço'}
                   </div>
+                  {ag.profissional && (
+                    <div style={{ 
+                      fontSize: '13px',
+                      color: '#999'
+                    }}>
+                      👤 {ag.profissional.nome}
+                    </div>
+                  )}
                 </div>
 
                 <div style={{

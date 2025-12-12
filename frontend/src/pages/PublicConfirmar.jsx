@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../services/api";
 import "../styles/public.css";
 
 export default function PublicConfirmar() {
   const { lojaId, servicoId, dataHora } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [loja, setLoja] = useState(null);
   const [servico, setServico] = useState(null);
+  const [profissional, setProfissional] = useState(null);
   const [camposPersonalizados, setCamposPersonalizados] = useState([]);
 
   const [nome, setNome] = useState("");
@@ -33,6 +35,17 @@ export default function PublicConfirmar() {
         if (lojaData.usaServicos && servicoId !== "0") {
           const respServico = await api.get(`/api/servicos/${servicoId}`);
           setServico(respServico.data);
+        }
+
+        // Carregar profissional se veio na URL
+        const profissionalId = searchParams.get('profissionalId');
+        if (profissionalId) {
+          try {
+            const respProf = await api.get(`/api/profissionais/${profissionalId}`);
+            setProfissional(respProf.data);
+          } catch (e) {
+            console.log("Erro ao carregar profissional:", e);
+          }
         }
 
         // Carregar campos personalizados
@@ -82,10 +95,11 @@ export default function PublicConfirmar() {
     }
 
     // Monta o corpo do POST
+    const profissionalId = searchParams.get('profissionalId');
     const payload = {
       lojaId: Number(lojaId),
       servicoId: loja.usaServicos ? Number(servicoId) : null,
-      profissionalId: null,
+      profissionalId: profissionalId ? Number(profissionalId) : null,
       dataHora,
       nome,
       telefone,
@@ -207,6 +221,13 @@ export default function PublicConfirmar() {
                     💰 R$ {servico.preco.toFixed(2)}
                   </div>
                 )}
+              </div>
+            )}
+
+            {profissional && (
+              <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>Profissional</div>
+                <div style={{ fontSize: '16px', fontWeight: '600' }}>👤 {profissional.nome}</div>
               </div>
             )}
 

@@ -3,10 +3,12 @@ package com.marcahora.controller;
 import com.marcahora.model.Agendamento;
 import com.marcahora.model.Cliente;
 import com.marcahora.model.Loja;
+import com.marcahora.model.Profissional;
 import com.marcahora.model.Servico;
 import com.marcahora.repository.AgendamentoRepository;
 import com.marcahora.repository.ClienteRepository;
 import com.marcahora.repository.LojaRepository;
+import com.marcahora.repository.ProfissionalRepository;
 import com.marcahora.repository.ServicoRepository;
 import com.marcahora.service.HorarioService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,17 +27,20 @@ public class PublicAgendamentoController {
     private final ServicoRepository servicoRepository;
     private final ClienteRepository clienteRepository;
     private final AgendamentoRepository agendamentoRepository;
+    private final ProfissionalRepository profissionalRepository;
     private final HorarioService horarioService;
 
     public PublicAgendamentoController(LojaRepository lojaRepository,
             ServicoRepository servicoRepository,
             ClienteRepository clienteRepository,
             AgendamentoRepository agendamentoRepository,
+            ProfissionalRepository profissionalRepository,
             HorarioService horarioService) {
         this.lojaRepository = lojaRepository;
         this.servicoRepository = servicoRepository;
         this.clienteRepository = clienteRepository;
         this.agendamentoRepository = agendamentoRepository;
+        this.profissionalRepository = profissionalRepository;
         this.horarioService = horarioService;
     }
 
@@ -119,6 +124,15 @@ public class PublicAgendamentoController {
                 }
             }
 
+            // NOVO: Extrair profissionalId
+            Long profissionalId = null;
+            if (body.containsKey("profissionalId") && body.get("profissionalId") != null) {
+                String p = body.get("profissionalId").toString();
+                if (!p.isBlank() && !p.equals("null")) {
+                    profissionalId = Long.valueOf(p);
+                }
+            }
+
             Loja loja = lojaRepository.findById(lojaId)
                     .orElseThrow(() -> new RuntimeException("Loja não encontrada"));
 
@@ -140,6 +154,12 @@ public class PublicAgendamentoController {
                 }
                 servico = servicoRepository.findById(servicoId)
                         .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+            }
+
+            // NOVO: Buscar profissional
+            Profissional profissional = null;
+            if (profissionalId != null) {
+                profissional = profissionalRepository.findById(profissionalId).orElse(null);
             }
 
             LocalDateTime dataHora = LocalDateTime.parse(dataHoraStr);
@@ -182,6 +202,7 @@ public class PublicAgendamentoController {
             ag.setLoja(loja);
             ag.setCliente(cliente);
             ag.setServico(servico);
+            ag.setProfissional(profissional); // NOVO: Seta o profissional
             ag.setDataHora(dataHora);
             ag.setObservacoes(observacoes);
             ag.setStatus("AGENDADO"); // se tiver enum depois, adaptamos

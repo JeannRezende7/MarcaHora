@@ -1,5 +1,6 @@
 package com.marcahora.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,17 +14,19 @@ public class Agendamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties({"agendamentos", "loja"})
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "servico_id")
+    @JsonIgnoreProperties({"loja"})
     private Servico servico;
 
-    // NOVO → profissional pode ser opcional
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profissional_id")
+    @JsonIgnoreProperties({"loja"})
     private Profissional profissional;
 
     private LocalDateTime dataHora;
@@ -34,7 +37,8 @@ public class Agendamento {
     @Column(length = 500)
     private String observacoes;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "loja_id")
+    @JsonIgnoreProperties({"agendamentos", "clientes", "servicos", "profissionais"})
     private Loja loja;
 }

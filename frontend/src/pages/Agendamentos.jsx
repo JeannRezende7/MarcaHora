@@ -203,6 +203,9 @@ export default function Agendamentos() {
                   </div>
                 )}
                 <div className="agendamento-detalhes">
+                  {ag.profissional && (
+                    <span>👤 {ag.profissional.nome}</span>
+                  )}
                   {ag.cliente?.telefone && (
                     <span>📱 {ag.cliente.telefone}</span>
                   )}
