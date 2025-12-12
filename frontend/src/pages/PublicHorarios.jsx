@@ -55,7 +55,7 @@ export default function PublicHorarios() {
         }
 
         if (dataLoja.usaProfissionais) {
-          const p = await api.get(`/public/profissionais/${lojaId}`);
+          const p = await api.get(`/api/profissionais/public/loja/${lojaId}`);
           setProfissionais(p.data || []);
         }
 

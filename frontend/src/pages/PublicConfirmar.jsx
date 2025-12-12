@@ -102,7 +102,26 @@ export default function PublicConfirmar() {
     try {
       const resp = await api.post("/public/agendamentos/criar", payload);
       if (resp.data.agendamentoId) {
-        navigate("/public/sucesso");
+        // Formatar data e hora para exibição
+        const dataHoraObj = new Date(dataHora);
+        const dataFormatada = dataHoraObj.toLocaleDateString('pt-BR', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+        const horaFormatada = dataHora.split("T")[1].substring(0, 5);
+
+        // Navegar para página de sucesso com dados
+        navigate("/public/sucesso", {
+          state: {
+            lojaId: lojaId,
+            servicoNome: servico?.nome || servico?.descricao || null,
+            data: dataFormatada,
+            horario: horaFormatada,
+            nome: nome
+          }
+        });
       }
     } catch (e) {
       console.error(e);

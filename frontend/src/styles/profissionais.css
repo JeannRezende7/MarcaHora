@@ -1,0 +1,179 @@
+/* Profissionais - Estilo */
+
+.page ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.page ul li {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
+  transition: all 0.2s;
+}
+
+.page ul li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.profissional-titulo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.profissional-acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-adicionar {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-adicionar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.btn-editar {
+  padding: 8px 16px;
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-editar:hover {
+  background: #1976d2;
+  transform: translateY(-1px);
+}
+
+.btn-deletar {
+  padding: 8px 16px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-deletar:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+}
+
+/* MODAL */
+.profissional-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.profissional-modal-content {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.profissional-modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #667eea;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+@media (max-width: 768px) {
+  .page ul li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .profissional-acoes {
+    width: 100%;
+  }
+
+  .profissional-acoes button {
+    flex: 1;
+  }
+
+  .profissional-modal-content {
+    padding: 24px;
+  }
+}

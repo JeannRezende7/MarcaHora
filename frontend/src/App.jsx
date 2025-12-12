@@ -11,6 +11,7 @@ import Agendamentos from './pages/Agendamentos'
 import Agenda from './pages/Agenda'
 import Clientes from './pages/Clientes'
 import Servicos from './pages/Servicos'
+import Profissionais from './pages/Profissionais'
 import Configuracoes from './pages/Configuracoes'
 
 // Páginas públicas
@@ -61,6 +62,12 @@ export default function App() {
                 Serviços
               </NavLink>
               <NavLink 
+                to="/profissionais"
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Profissionais
+              </NavLink>
+              <NavLink 
                 to="/clientes"
                 className={({ isActive }) => isActive ? 'active' : ''}
               >
@@ -107,6 +114,10 @@ export default function App() {
 
           <Route path="/servicos" element={
             <PrivateRoute><Servicos /></PrivateRoute>
+          }/>
+
+          <Route path="/profissionais" element={
+            <PrivateRoute><Profissionais /></PrivateRoute>
           }/>
 
           <Route path="/configuracoes" element={
