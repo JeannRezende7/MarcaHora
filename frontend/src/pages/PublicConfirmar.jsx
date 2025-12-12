@@ -18,6 +18,7 @@ export default function PublicConfirmar() {
 
   const [respostas, setRespostas] = useState({});
   const [carregando, setCarregando] = useState(true);
+  const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState("");
 
   useEffect(() => {
@@ -56,7 +57,8 @@ export default function PublicConfirmar() {
     });
   }
 
-  async function confirmarAgendamento() {
+  async function confirmarAgendamento(e) {
+    e.preventDefault();
     if (!loja) return;
 
     setErro("");
@@ -83,7 +85,7 @@ export default function PublicConfirmar() {
     const payload = {
       lojaId: Number(lojaId),
       servicoId: loja.usaServicos ? Number(servicoId) : null,
-      profissionalId: null, // implementação futura
+      profissionalId: null,
       dataHora,
       nome,
       telefone,
@@ -95,6 +97,8 @@ export default function PublicConfirmar() {
       }))
     };
 
+    setEnviando(true);
+
     try {
       const resp = await api.post("/public/agendamentos/criar", payload);
       if (resp.data.agendamentoId) {
@@ -103,127 +107,275 @@ export default function PublicConfirmar() {
     } catch (e) {
       console.error(e);
       setErro(e.response?.data || "Erro ao criar agendamento.");
+      setEnviando(false);
     }
   }
 
-  if (carregando) return <div className="carregando">Carregando...</div>;
-  if (!loja) return <div>Loja não encontrada</div>;
+  if (carregando) {
+    return (
+      <div className="public-container">
+        <div className="loading">⏳ Carregando...</div>
+      </div>
+    );
+  }
 
+  if (!loja) {
+    return (
+      <div className="public-container">
+        <div className="public-card">
+          <h2>❌ Loja não encontrada</h2>
+        </div>
+      </div>
+    );
+  }
+
+  // Formatar data e hora
+  const dataHoraObj = new Date(dataHora);
+  const dataFormatada = dataHoraObj.toLocaleDateString('pt-BR', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
   const horaFormatada = dataHora.split("T")[1].substring(0, 5);
-  const dataFormatada = new Date(dataHora).toLocaleDateString();
 
   return (
     <div className="public-container">
+      <div className="public-wrapper">
+        
+        {/* HEADER DA LOJA */}
+        <div className="loja-header">
+          {loja.logoUrl && (
+            <img src={loja.logoUrl} alt={loja.nome} className="loja-logo" />
+          )}
+          <h1 className="loja-nome">{loja.nome}</h1>
+          <div className="loja-info">
+            {loja.telefone && <span>📞 {loja.telefone}</span>}
+            {loja.email && <span>📧 {loja.email}</span>}
+          </div>
+        </div>
 
-      <h1>Confirmar Agendamento</h1>
+        {/* RESUMO DO AGENDAMENTO */}
+        <div style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          padding: '30px',
+          borderRadius: '16px',
+          color: 'white',
+          marginBottom: '24px',
+          boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)'
+        }}>
+          <h2 style={{ 
+            color: 'white', 
+            fontSize: '24px', 
+            marginBottom: '20px',
+            textAlign: 'center'
+          }}>
+            ✨ Resumo do Agendamento
+          </h2>
 
-      {servico && <h2>Serviço: {servico.nome}</h2>}
-
-      <p>
-        <strong>Data:</strong> {dataFormatada}<br />
-        <strong>Horário:</strong> {horaFormatada}
-      </p>
-
-      <div className="formulario">
-
-        {loja.obrigarNome && (
-          <input
-            type="text"
-            placeholder="Seu nome *"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        )}
-
-        {loja.obrigarTelefone && (
-          <input
-            type="tel"
-            placeholder="Telefone *"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-          />
-        )}
-
-        {loja.obrigarEmail && (
-          <input
-            type="email"
-            placeholder="E-mail *"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        )}
-
-        {loja.mostrarObservacoes && (
-          <textarea
-            placeholder="Observações (opcional)"
-            value={observacoes}
-            onChange={(e) => setObservacoes(e.target.value)}
-          />
-        )}
-
-        {/* CAMPOS PERSONALIZADOS */}
-        {camposPersonalizados.length > 0 && (
-          <>
-            <h3>Informações adicionais</h3>
-
-            {camposPersonalizados.map((campo) => (
-              <div key={campo.id} className="campo-extra">
-
-                <label>
-                  {campo.pergunta}
-                  {campo.obrigatorio && <span className="obrigatorio">*</span>}
-                </label>
-
-                {/* Tipo de campo */}
-                {campo.tipoResposta === "sim_nao" && (
-                  <select
-                    value={respostas[campo.id] || ""}
-                    onChange={(e) => handleResposta(campo.id, e.target.value)}
-                  >
-                    <option value="">Selecione</option>
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
-                  </select>
-                )}
-
-                {campo.tipoResposta === "numero" && (
-                  <input
-                    type="number"
-                    value={respostas[campo.id] || ""}
-                    onChange={(e) => handleResposta(campo.id, e.target.value)}
-                  />
-                )}
-
-                {campo.tipoResposta === "texto" && (
-                  <input
-                    type="text"
-                    value={respostas[campo.id] || ""}
-                    onChange={(e) => handleResposta(campo.id, e.target.value)}
-                  />
-                )}
-
-                {/* Futuro: múltipla escolha */}
-                {campo.tipoResposta === "opcao" && (
-                  <input
-                    type="text"
-                    placeholder="Digite sua resposta"
-                    value={respostas[campo.id] || ""}
-                    onChange={(e) => handleResposta(campo.id, e.target.value)}
-                  />
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.15)',
+            borderRadius: '12px',
+            padding: '20px',
+            backdropFilter: 'blur(10px)'
+          }}>
+            {servico && (
+              <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
+                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>Serviço</div>
+                <div style={{ fontSize: '18px', fontWeight: '600' }}>{servico.nome}</div>
+                {servico.preco && (
+                  <div style={{ fontSize: '16px', marginTop: '6px' }}>
+                    💰 R$ {servico.preco.toFixed(2)}
+                  </div>
                 )}
               </div>
-            ))}
-          </>
-        )}
+            )}
 
-        {erro && <div className="erro">{erro}</div>}
+            <div style={{ marginBottom: '12px' }}>
+              <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>📅 Data</div>
+              <div style={{ fontSize: '16px', fontWeight: '600', textTransform: 'capitalize' }}>
+                {dataFormatada}
+              </div>
+            </div>
 
-        <button className="btn-confirmar" onClick={confirmarAgendamento}>
-          Confirmar Agendamento
-        </button>
+            <div>
+              <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>🕐 Horário</div>
+              <div style={{ fontSize: '20px', fontWeight: '700' }}>{horaFormatada}</div>
+            </div>
+          </div>
+        </div>
 
+        {/* CARD DO FORMULÁRIO */}
+        <div className="public-card">
+          <h2>📝 Seus Dados</h2>
+          <p style={{ color: '#777', marginBottom: '30px' }}>
+            Preencha suas informações para confirmar o agendamento
+          </p>
+
+          <form onSubmit={confirmarAgendamento} className="form-public">
+
+            {/* Nome */}
+            {loja.obrigarNome && (
+              <div className="form-group-public">
+                <label>👤 Nome completo *</label>
+                <input
+                  type="text"
+                  placeholder="Digite seu nome"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  required={loja.obrigarNome}
+                />
+              </div>
+            )}
+
+            {/* Telefone */}
+            {loja.obrigarTelefone && (
+              <div className="form-group-public">
+                <label>📱 Telefone *</label>
+                <input
+                  type="tel"
+                  placeholder="(00) 00000-0000"
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
+                  required={loja.obrigarTelefone}
+                />
+              </div>
+            )}
+
+            {/* Email */}
+            {loja.obrigarEmail && (
+              <div className="form-group-public">
+                <label>📧 E-mail *</label>
+                <input
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required={loja.obrigarEmail}
+                />
+              </div>
+            )}
+
+            {/* Observações */}
+            {loja.mostrarObservacoes && (
+              <div className="form-group-public">
+                <label>💬 Observações (opcional)</label>
+                <textarea
+                  placeholder="Alguma informação adicional que gostaria de compartilhar?"
+                  value={observacoes}
+                  onChange={(e) => setObservacoes(e.target.value)}
+                  rows={4}
+                />
+              </div>
+            )}
+
+            {/* CAMPOS PERSONALIZADOS */}
+            {camposPersonalizados.length > 0 && (
+              <>
+                <h3 style={{ 
+                  marginTop: '30px', 
+                  marginBottom: '20px',
+                  fontSize: '18px',
+                  color: '#333'
+                }}>
+                  ℹ️ Informações Adicionais
+                </h3>
+
+                {camposPersonalizados.map((campo) => (
+                  <div key={campo.id} className="form-group-public">
+                    <label>
+                      {campo.pergunta}
+                      {campo.obrigatorio && <span style={{ color: '#f44336', marginLeft: '4px' }}>*</span>}
+                    </label>
+
+                    {/* Sim/Não */}
+                    {campo.tipoResposta === "sim_nao" && (
+                      <select
+                        value={respostas[campo.id] || ""}
+                        onChange={(e) => handleResposta(campo.id, e.target.value)}
+                        required={campo.obrigatorio}
+                      >
+                        <option value="">Selecione</option>
+                        <option value="Sim">Sim</option>
+                        <option value="Não">Não</option>
+                      </select>
+                    )}
+
+                    {/* Número */}
+                    {campo.tipoResposta === "numero" && (
+                      <input
+                        type="number"
+                        value={respostas[campo.id] || ""}
+                        onChange={(e) => handleResposta(campo.id, e.target.value)}
+                        required={campo.obrigatorio}
+                      />
+                    )}
+
+                    {/* Texto */}
+                    {(campo.tipoResposta === "texto" || !campo.tipoResposta) && (
+                      <input
+                        type="text"
+                        placeholder="Digite sua resposta"
+                        value={respostas[campo.id] || ""}
+                        onChange={(e) => handleResposta(campo.id, e.target.value)}
+                        required={campo.obrigatorio}
+                      />
+                    )}
+                  </div>
+                ))}
+              </>
+            )}
+
+            {/* MENSAGEM DE ERRO */}
+            {erro && (
+              <div className="erro-mensagem" style={{ marginTop: '20px' }}>
+                ⚠️ {erro}
+              </div>
+            )}
+
+            {/* BOTÕES */}
+            <div style={{ 
+              display: 'flex', 
+              gap: '12px', 
+              marginTop: '30px',
+              flexWrap: 'wrap'
+            }}>
+              <button
+                type="button"
+                className="btn-voltar"
+                onClick={() => navigate(-1)}
+                disabled={enviando}
+                style={{ flex: '1', minWidth: '200px' }}
+              >
+                ← Voltar
+              </button>
+
+              <button
+                type="submit"
+                className="btn-public"
+                disabled={enviando}
+                style={{ flex: '2', minWidth: '200px' }}
+              >
+                {enviando ? '⏳ Confirmando...' : '✅ Confirmar Agendamento'}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* INFORMAÇÕES */}
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.9)',
+          padding: '16px',
+          borderRadius: '12px',
+          textAlign: 'center',
+          fontSize: '13px',
+          color: '#666'
+        }}>
+          <p style={{ margin: 0 }}>
+            🔒 Seus dados estão seguros. Após confirmar, você receberá um resumo do agendamento.
+          </p>
+        </div>
       </div>
-
     </div>
   );
 }

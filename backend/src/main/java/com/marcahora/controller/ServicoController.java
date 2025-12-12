@@ -26,6 +26,13 @@ public class ServicoController {
         return servicoRepository.findByLojaId(lojaId);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Servico> buscarPorId(@PathVariable Long id) {
+        return servicoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/loja/{lojaId}")
     public ResponseEntity<?> criar(@PathVariable Long lojaId, @RequestBody Servico servico) {
         Loja loja = lojaRepository.findById(lojaId).orElse(null);
@@ -42,6 +49,7 @@ public class ServicoController {
         return servicoRepository.findById(id)
                 .map(existing -> {
                     existing.setNome(servico.getNome());
+                    existing.setDescricao(servico.getDescricao());
                     existing.setDuracaoMinutos(servico.getDuracaoMinutos());
                     existing.setPreco(servico.getPreco());
                     return ResponseEntity.ok(servicoRepository.save(existing));

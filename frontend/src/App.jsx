@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, Link } from 'react-router-dom'
+import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 
 // CSS Global
@@ -8,12 +8,13 @@ import "./styles/geral.css"
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Agendamentos from './pages/Agendamentos'
+import Agenda from './pages/Agenda'
 import Clientes from './pages/Clientes'
 import Servicos from './pages/Servicos'
 import Configuracoes from './pages/Configuracoes'
 
 // Páginas públicas
-import Cadastro from './pages/Cadastro'   // ⬅ RESTAURADA
+import Cadastro from './pages/Cadastro'
 import PublicLoja from './pages/PublicLoja'
 import PublicHorarios from './pages/PublicHorarios'
 import PublicConfirmar from './pages/PublicConfirmar'
@@ -33,15 +34,44 @@ export default function App() {
       {usuario && (
         <header className="topbar">
           <div className="topbar-left">
-            <span className="logo">MarcaHora</span>
-
             <nav className="menu">
-              <Link to="/">Dashboard</Link>
-              <Link to="/agendamentos">Agendamentos</Link>
-              <Link to="/agenda">Agenda</Link>
-              <Link to="/servicos">Serviços</Link>
-              <Link to="/clientes">Clientes</Link>
-              <Link to="/configuracoes">Configurações</Link>
+              <NavLink 
+                to="/" 
+                className={({ isActive }) => isActive ? 'active' : ''}
+                end
+              >
+                Dashboard
+              </NavLink>
+              <NavLink 
+                to="/agendamentos"
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Agendamentos
+              </NavLink>
+              <NavLink 
+                to="/agenda"
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Agenda
+              </NavLink>
+              <NavLink 
+                to="/servicos"
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Serviços
+              </NavLink>
+              <NavLink 
+                to="/clientes"
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Clientes
+              </NavLink>
+              <NavLink 
+                to="/configuracoes"
+                className={({ isActive }) => isActive ? 'active' : ''}
+              >
+                Configurações
+              </NavLink>
             </nav>
           </div>
 
@@ -56,7 +86,7 @@ export default function App() {
         <Routes>
           {/* páginas públicas */}
           <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />   {/* ⬅ RESTAURADA */}
+          <Route path="/cadastro" element={<Cadastro />} />
 
           {/* páginas privadas */}
           <Route path="/" element={
@@ -65,6 +95,10 @@ export default function App() {
 
           <Route path="/agendamentos" element={
             <PrivateRoute><Agendamentos /></PrivateRoute>
+          }/>
+
+          <Route path="/agenda" element={
+            <PrivateRoute><Agenda /></PrivateRoute>
           }/>
 
           <Route path="/clientes" element={

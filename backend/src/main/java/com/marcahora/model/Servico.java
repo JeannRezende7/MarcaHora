@@ -14,6 +14,7 @@ public class Servico {
     private Long id;
 
     private String nome;
+    private String descricao;
     private Integer duracaoMinutos;
     private BigDecimal preco;
 

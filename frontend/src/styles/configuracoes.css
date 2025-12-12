@@ -1,190 +1,329 @@
-/* ============================== */
-/* PÁGINA GERAL */
-/* ============================== */
+/* Configurações - Estilo melhorado */
 
-.page {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+.secao {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
 }
 
-.page h1 {
-  font-size: 1.8rem;
+.secao h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
   font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1.5rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
 }
-
-/* ============================== */
-/* CARDS */
-/* ============================== */
-
-.card {
-  background: #ffffff;
-  padding: 1.75rem;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
-
-.card h2 {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  color: #111827;
-  font-weight: 600;
-}
-
-/* ============================== */
-/* FORMULÁRIOS */
-/* ============================== */
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
 .form-group label {
+  display: block;
+  margin-bottom: 8px;
   font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.4rem;
-  font-size: 0.92rem;
+  font-size: 14px;
+  color: #555;
 }
 
-.form-input {
-  padding: 0.65rem 0.8rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.9rem;
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="time"],
+.form-group input[type="number"],
+.form-group input[type="color"],
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border 0.2s;
   outline: none;
-  transition: all 0.2s;
-  background: white;
+  font-family: inherit;
 }
 
-.form-input:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="time"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+  border-color: #667eea;
 }
 
-/* ============================== */
-/* CHECKBOXES */
-/* ============================== */
+.form-group input[type="color"] {
+  height: 50px;
+  cursor: pointer;
+  padding: 4px;
+}
 
-.form-checkbox {
+.form-group small {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #999;
+}
+
+/* Grid de 2 colunas */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.checkbox-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 10px;
+  padding: 12px;
+  background: #f5f6fa;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
-  user-select: none;
-  color: #374151;
+  transition: background 0.2s;
 }
 
-.form-checkbox input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
+.checkbox-item:hover {
+  background: #e8eaf6;
 }
 
-/* ============================== */
-/* GRID DE DIAS DA SEMANA */
-/* ============================== */
-
-.dias-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 0.5rem;
+.checkbox-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #667eea;
 }
 
-/* ============================== */
-/* BOTÕES */
-/* ============================== */
+.checkbox-item label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+  flex: 1;
+}
 
-.btn-primary {
-  background: #4F46E5;
+/* Botões */
+.btn-salvar {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 6px;
-  cursor: pointer;
+  border-radius: 8px;
+  font-size: 15px;
   font-weight: 600;
-  font-size: 0.95rem;
-  transition: 0.2s;
-  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-.btn-primary:hover {
-  background: #4338ca;
+.btn-salvar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
-.btn-danger {
-  background: #dc2626;
+.btn-salvar:active {
+  transform: translateY(0);
+}
+
+.btn-salvar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-adicionar-campo {
+  padding: 10px 20px;
+  background: #4caf50;
   color: white;
   border: none;
-  padding: 0.5rem 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85rem;
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
-  transition: 0.2s;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.btn-danger:hover {
-  background: #b91c1c;
+.btn-adicionar-campo:hover {
+  background: #45a049;
+  transform: translateY(-1px);
 }
 
-/* ============================== */
-/* GRID DE COLUNAS */
-/* ============================== */
-
-.row-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+.btn-remover-campo {
+  padding: 6px 12px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* ============================== */
-/* CAMPOS PERSONALIZADOS */
-/* ============================== */
+.btn-remover-campo:hover {
+  background: #da190b;
+}
+
+/* Lista de campos personalizados */
+.lista-campos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
 
 .campo-item {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 0.9rem 1rem;
-  margin-bottom: 0.7rem;
-
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
   align-items: center;
-  justify-content: space-between;
+  padding: 16px;
+  background: #f5f6fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
 }
 
-.campo-item strong {
-  font-size: 1rem;
-  color: #111827;
+.campo-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.campo-tipo {
-  font-size: 0.8rem;
-  color: #6b7280;
+.campo-item-pergunta {
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
 }
 
-/* ============================== */
-/* RESPONSIVIDADE */
-/* ============================== */
+.campo-item-detalhes {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: #777;
+}
 
-@media (max-width: 480px) {
-  .page {
-    padding: 0 0.5rem;
-  }
+.campo-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background: white;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
 
-  .card {
-    padding: 1.25rem;
-  }
+.campo-badge.obrigatorio {
+  background: #fff3e0;
+  color: #ff9800;
+}
 
-  .btn-primary,
-  .btn-danger {
-    width: 100%;
-    text-align: center;
+/* Mensagens de sucesso/erro */
+.mensagem-sucesso {
+  padding: 16px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #4caf50;
+  font-weight: 600;
+}
+
+.mensagem-erro {
+  padding: 16px;
+  background: #ffebee;
+  color: #c62828;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #f44336;
+  font-weight: 600;
+}
+
+/* Dias da semana */
+.dias-semana-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* Formulário de novo campo */
+.novo-campo-form {
+  padding: 20px;
+  background: #f5f6fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px dashed #e0e0e0;
+}
+
+.novo-campo-form h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Cartão de dica */
+.dica-card {
+  padding: 16px;
+  background: #e3f2fd;
+  border-radius: 8px;
+  border-left: 4px solid #2196f3;
+  margin-top: 20px;
+}
+
+.dica-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #1565c0;
+  line-height: 1.6;
+}
+
+/* Animação de salvamento */
+@keyframes salvar {
+  0% {
+    transform: scale(1);
   }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn-salvar.salvando {
+  animation: salvar 0.3s ease;
+}
+
+/* Estado vazio */
+.estado-vazio {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+.estado-vazio-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
 }
