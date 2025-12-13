@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/public.css";
-import '../styles/public-reset.css'; 
+import '../styles/public-reset.css';  
 import '../styles/public.css';  
 
 export default function PublicSucesso() {
