@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
-import "../styles/public.css";
+import '../styles/public-reset.css';  
+import '../styles/public.css';  
 
 export default function PublicLoja() {
   const { id } = useParams();

@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, NavLink } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 
 // CSS Global
+import './styles/reset-espacos.css';
 import "./styles/geral.css"
 
 // Páginas privadas

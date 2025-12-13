@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import api from "../services/api";
-import "../styles/public.css";
+import '../styles/public-reset.css';  
+import '../styles/public.css';  
 
 export default function PublicHorarios() {
   const { lojaId, servicoId } = useParams();
@@ -274,7 +275,7 @@ export default function PublicHorarios() {
                   e.currentTarget.style.color = loja.corPrimaria || '#667eea';
                 }}
               >
-                📅
+                •
               </button>
               <button 
                 className="btn-nav"

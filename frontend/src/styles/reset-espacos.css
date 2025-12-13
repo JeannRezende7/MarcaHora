@@ -1,0 +1,34 @@
+/* =======================================
+   RESET COMPLETO - SEM ESPAÇOS
+   Adicione este import ANTES do geral.css
+========================================= */
+
+/* Remove todos os espaços do navegador */
+html {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+/* Remove espaços do container do React */
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove espaços de qualquer container principal */
+.App {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Garante que nada tenha margin top */
+body > * {
+  margin-top: 0 !important;
+}

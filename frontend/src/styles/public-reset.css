@@ -1,0 +1,54 @@
+/* =======================================
+   RESET PARA PÁGINAS PÚBLICAS
+   Garante zero espaço em mobile/Android
+========================================= */
+
+/* Remove TODOS os espaços */
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove qualquer espaço superior da página pública */
+.public-container {
+  margin-top: 0 !important;
+}
+
+/* Garante que nada empurre o conteúdo para baixo */
+body > *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Remove espaço do container React */
+#root > *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Para Android - remove qualquer padding do viewport */
+@supports (-webkit-touch-callout: none) {
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* Para telas muito pequenas - maximiza espaço útil */
+@media (max-width: 400px) {
+  .public-container {
+    padding-top: 4px !important;
+  }
+  
+  .loja-header {
+    padding-top: 12px !important;
+    margin-top: 0 !important;
+  }
+}

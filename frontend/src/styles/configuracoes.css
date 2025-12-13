@@ -1,4 +1,6 @@
-/* Configurações - Página */
+/* ====================================
+   CONFIGURAÇÕES - PÁGINA
+====================================== */
 
 .configuracoes-page {
   max-width: 1200px;
@@ -8,11 +10,13 @@
 .configuracoes-page h1 {
   margin-bottom: 30px;
   color: #333;
-  font-size: 28px;
+  font-size: clamp(22px, 5vw, 28px);
   font-weight: 700;
 }
 
-/* Seções */
+/* ====================================
+   SEÇÕES
+====================================== */
 .secao {
   background: white;
   padding: 32px;
@@ -24,7 +28,7 @@
 
 .secao h2 {
   margin: 0 0 24px 0;
-  font-size: 20px;
+  font-size: clamp(17px, 4vw, 20px);
   font-weight: 700;
   color: #333;
   display: flex;
@@ -34,7 +38,9 @@
   border-bottom: 2px solid #f0f0f0;
 }
 
-/* Form Groups */
+/* ====================================
+   FORM GROUPS
+====================================== */
 .form-group {
   margin-bottom: 24px;
 }
@@ -43,7 +49,7 @@
   display: block;
   margin-bottom: 10px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 15px);
   color: #444;
 }
 
@@ -59,7 +65,7 @@
   padding: 14px 16px;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: clamp(14px, 3vw, 15px);
   transition: all 0.2s;
   outline: none;
   font-family: inherit;
@@ -77,30 +83,29 @@
   height: 56px;
   cursor: pointer;
   padding: 6px;
+  width: 100%;
 }
 
 .form-group small {
   display: block;
   margin-top: 8px;
-  font-size: 13px;
+  font-size: clamp(12px, 2.5vw, 13px);
   color: #777;
   line-height: 1.5;
 }
 
-/* Grid de 2 colunas */
+/* ====================================
+   GRID DE 2 COLUNAS
+====================================== */
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
-@media (max-width: 768px) {
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Checkboxes - Campos Obrigatórios e Modos */
+/* ====================================
+   CHECKBOXES
+====================================== */
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
@@ -119,6 +124,7 @@
   transition: all 0.2s;
   border: 2px solid transparent;
   min-width: 180px;
+  flex: 1 1 auto;
 }
 
 .checkbox-item:hover {
@@ -132,6 +138,7 @@
   cursor: pointer;
   accent-color: #667eea;
   margin: 0;
+  flex-shrink: 0;
 }
 
 .checkbox-item label {
@@ -139,11 +146,13 @@
   font-weight: 500;
   color: #333;
   margin: 0;
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 15px);
   user-select: none;
 }
 
-/* Dias da Semana */
+/* ====================================
+   DIAS DA SEMANA
+====================================== */
 .dias-semana-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -174,6 +183,7 @@
   cursor: pointer;
   accent-color: #667eea;
   margin: 0;
+  flex-shrink: 0;
 }
 
 .dia-semana-item label {
@@ -181,24 +191,28 @@
   font-weight: 500;
   color: #333;
   margin: 0;
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 15px);
   user-select: none;
   flex: 1;
 }
 
-/* Botões */
+/* ====================================
+   BOTÕES
+====================================== */
 .btn-salvar {
   padding: 14px 32px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: clamp(14px, 3vw, 16px);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   margin-top: 8px;
+  width: 100%;
+  max-width: 300px;
 }
 
 .btn-salvar:hover {
@@ -222,7 +236,7 @@
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 15px);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -240,17 +254,20 @@
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: clamp(12px, 2.5vw, 14px);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .btn-remover:hover {
   background: #da190b;
 }
 
-/* Campos Personalizados */
+/* ====================================
+   CAMPOS PERSONALIZADOS
+====================================== */
 .lista-campos {
   display: flex;
   flex-direction: column;
@@ -271,19 +288,21 @@
 
 .campo-item-info {
   flex: 1;
+  min-width: 0;
 }
 
 .campo-item-pergunta {
   font-weight: 600;
   color: #333;
-  font-size: 16px;
+  font-size: clamp(14px, 3vw, 16px);
   margin-bottom: 8px;
+  word-wrap: break-word;
 }
 
 .campo-item-detalhes {
   display: flex;
   gap: 16px;
-  font-size: 14px;
+  font-size: clamp(12px, 2.5vw, 14px);
   color: #666;
   flex-wrap: wrap;
 }
@@ -293,8 +312,9 @@
   padding: 6px 12px;
   background: white;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: clamp(11px, 2vw, 13px);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .campo-badge.obrigatorio {
@@ -302,7 +322,9 @@
   color: #f57c00;
 }
 
-/* Novo Campo Form */
+/* ====================================
+   NOVO CAMPO FORM
+====================================== */
 .novo-campo-form {
   padding: 24px;
   background: #f5f6fa;
@@ -313,7 +335,7 @@
 
 .novo-campo-form h3 {
   margin: 0 0 20px 0;
-  font-size: 18px;
+  font-size: clamp(16px, 3.5vw, 18px);
   color: #444;
   font-weight: 600;
 }
@@ -326,7 +348,9 @@
   margin-top: 12px;
 }
 
-/* Mensagens */
+/* ====================================
+   MENSAGENS
+====================================== */
 .mensagem-sucesso {
   padding: 16px 20px;
   background: #e8f5e9;
@@ -335,6 +359,7 @@
   margin-bottom: 24px;
   border-left: 4px solid #4caf50;
   font-weight: 600;
+  font-size: clamp(13px, 3vw, 14px);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -348,12 +373,15 @@
   margin-bottom: 24px;
   border-left: 4px solid #f44336;
   font-weight: 600;
+  font-size: clamp(13px, 3vw, 14px);
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* Estado Vazio */
+/* ====================================
+   ESTADO VAZIO
+====================================== */
 .estado-vazio {
   text-align: center;
   padding: 60px 20px;
@@ -361,17 +389,19 @@
 }
 
 .estado-vazio-icon {
-  font-size: 64px;
+  font-size: clamp(48px, 12vw, 64px);
   margin-bottom: 16px;
   opacity: 0.5;
 }
 
 .estado-vazio p {
-  font-size: 16px;
+  font-size: clamp(14px, 3vw, 16px);
   margin: 0;
 }
 
-/* Dica Card */
+/* ====================================
+   DICA CARD
+====================================== */
 .dica-card {
   padding: 20px;
   background: #e3f2fd;
@@ -382,7 +412,7 @@
 
 .dica-card p {
   margin: 0;
-  font-size: 15px;
+  font-size: clamp(13px, 3vw, 15px);
   color: #1565c0;
   line-height: 1.7;
 }
@@ -391,7 +421,9 @@
   font-weight: 600;
 }
 
-/* Animações */
+/* ====================================
+   ANIMAÇÕES
+====================================== */
 @keyframes salvar {
   0% { transform: scale(1); }
   50% { transform: scale(0.95); }
@@ -402,22 +434,110 @@
   animation: salvar 0.3s ease;
 }
 
-/* Responsivo */
+/* ===================================
+   RESPONSIVO - TABLET
+===================================== */
+@media (max-width: 1024px) {
+  .secao {
+    padding: 28px 24px;
+  }
+
+  .grid-2 {
+    gap: 20px;
+  }
+
+  .dias-semana-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+/* ===================================
+   RESPONSIVO - MOBILE
+===================================== */
 @media (max-width: 768px) {
   .secao {
     padding: 24px 20px;
   }
 
-  .configuracoes-page h1 {
-    font-size: 24px;
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .checkbox-item {
     min-width: 100%;
   }
 
+  .dias-semana-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .dia-semana-item {
+    padding: 12px 14px;
+  }
+
   .campo-item {
     flex-direction: column;
     gap: 12px;
+    padding: 16px;
+  }
+
+  .campo-item-detalhes {
+    gap: 12px;
+  }
+
+  .btn-salvar {
+    max-width: 100%;
+  }
+
+  .novo-campo-form {
+    padding: 20px;
+  }
+
+  .estado-vazio {
+    padding: 40px 20px;
+  }
+}
+
+/* ===================================
+   RESPONSIVO - MOBILE PEQUENO
+===================================== */
+@media (max-width: 480px) {
+  .secao {
+    padding: 20px 16px;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="tel"],
+  .form-group input[type="time"],
+  .form-group input[type="number"],
+  .form-group input[type="url"],
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 14px;
+  }
+
+  .checkbox-item,
+  .dia-semana-item {
+    padding: 10px 12px;
+  }
+
+  .campo-item {
+    padding: 14px;
+  }
+
+  .novo-campo-form {
+    padding: 16px;
+  }
+
+  .btn-adicionar {
+    width: 100%;
+  }
+
+  .dias-semana-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
   }
 }
