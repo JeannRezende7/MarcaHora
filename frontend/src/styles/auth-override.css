@@ -1,0 +1,12 @@
+/* Override forçado para auth */
+.auth-container {
+  background: #ffffff !important;
+}
+
+body:has(.auth-container) {
+  background: #ffffff !important;
+}
+
+html:has(.auth-container) {
+  background: #ffffff !important;
+}

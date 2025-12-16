@@ -180,27 +180,13 @@ export default function PublicHorarios() {
         <div className="public-card">
           
           {/* INFORMAÇÕES DO SERVIÇO */}
+          {/* INFORMAÇÕES DO SERVIÇO */}
           {servico && (
-            <div style={{ 
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              padding: '20px',
-              borderRadius: '12px',
-              color: 'white',
-              marginBottom: '30px'
-            }}>
-              <h2 style={{ color: 'white', marginBottom: '12px' }}>
-                ✨ {servico.nome || servico.descricao}
-              </h2>
-              <div style={{ 
-                display: 'flex', 
-                gap: '20px', 
-                fontSize: '16px',
-                flexWrap: 'wrap'
-              }}>
+            <div className="servico-info-card">
+              <h2>✨ {servico.nome || servico.descricao}</h2>
+              <div className="servico-detalhes">
                 {servico.preco && (
-                  <span style={{ fontWeight: '600' }}>
-                    💰 R$ {servico.preco.toFixed(2)}
-                  </span>
+                  <span>💰 R$ {servico.preco.toFixed(2)}</span>
                 )}
                 {servico.duracaoMinutos && (
                   <span>⏱️ {servico.duracaoMinutos} minutos</span>

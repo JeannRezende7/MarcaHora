@@ -4,6 +4,7 @@ import { useAuth } from './context/AuthContext'
 // CSS Global
 import './styles/reset-espacos.css';
 import "./styles/geral.css"
+import "./styles/modern-override.css"  // Override para garantir layout moderno
 
 // Páginas privadas
 import Login from './pages/Login'
@@ -35,6 +36,9 @@ export default function App() {
       {usuario && (
         <header className="topbar">
           <div className="topbar-left">
+            <div className="logo">
+              📅 <span>{usuario.lojaNome || 'marcahora'}</span>
+            </div>
             <nav className="menu">
               <NavLink 
                 to="/" 
@@ -77,8 +81,7 @@ export default function App() {
           </div>
 
           <div className="topbar-right">
-            <span>{usuario.lojaNome}</span>
-            <button onClick={logout}>Sair</button>
+            <button className="btn-sair" onClick={logout}>Sair</button>
           </div>
         </header>
       )}

@@ -1,11 +1,11 @@
 /* ======================================
-   PÁGINAS PÚBLICAS - AGENDAMENTO
+   PÁGINAS PÚBLICAS - Design Minimalista
 ======================================== */
 
 .public-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 16px 20px 40px;
+  background: #ffffff;
+  padding: 20px;
   margin: 0;
 }
 
@@ -19,27 +19,27 @@
 ======================================== */
 .loja-header {
   background: white;
-  border-radius: 16px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
   text-align: center;
 }
 
 .loja-logo {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 20px;
-  border: 4px solid #f5f6fa;
+  margin-bottom: 16px;
+  border: 3px solid #e5e7eb;
 }
 
 .loja-nome {
   font-size: clamp(24px, 5vw, 32px);
   font-weight: 700;
-  color: #222;
-  margin-bottom: 10px;
+  color: #111827;
+  margin-bottom: 8px;
 }
 
 .loja-info {
@@ -47,7 +47,7 @@
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  color: #777;
+  color: #6b7280;
   font-size: 14px;
   margin-top: 16px;
 }
@@ -63,25 +63,25 @@
 ======================================== */
 .public-card {
   background: white;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
   margin-bottom: 20px;
 }
 
 .public-card h2 {
   font-size: clamp(20px, 4vw, 24px);
   font-weight: 700;
-  color: #333;
-  margin-bottom: 24px;
+  color: #111827;
+  margin-bottom: 20px;
 }
 
 .public-card h3 {
   font-size: clamp(16px, 3.5vw, 18px);
   font-weight: 600;
-  color: #555;
+  color: #374151;
   margin-bottom: 16px;
-  margin-top: 24px;
+  margin-top: 20px;
 }
 
 /* ======================================
@@ -91,62 +91,88 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 16px;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
 .servico-option {
-  background: #f5f6fa;
-  border: 3px solid #e0e0e0;
+  background: white;
+  border: 2px solid #e5e7eb;
   border-radius: 12px;
   padding: 20px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
   text-align: center;
 }
 
 .servico-option:hover {
   border-color: #667eea;
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
 }
 
 .servico-option.selected {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-color: #667eea;
-  color: white;
+  background: #f5f3ff;
 }
 
 .servico-nome {
-  font-size: clamp(14px, 3vw, 16px);
+  font-size: 16px;
   font-weight: 600;
+  color: #111827;
   margin-bottom: 8px;
 }
 
-.servico-preco {
-  font-size: clamp(18px, 4vw, 20px);
-  font-weight: 700;
-  color: #4caf50;
-  margin-bottom: 4px;
+.servico-info {
+  font-size: 14px;
+  color: #6b7280;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.servico-option.selected .servico-preco {
-  color: white;
+/* ======================================
+   Seleção de Profissional
+======================================== */
+.profissionais-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.servico-duracao {
-  font-size: clamp(12px, 2.5vw, 13px);
-  color: #777;
+.profissional-option {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
 }
 
-.servico-option.selected .servico-duracao {
-  color: rgba(255, 255, 255, 0.9);
+.profissional-option:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.profissional-option.selected {
+  border-color: #667eea;
+  background: #f5f3ff;
+}
+
+.profissional-nome {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
 }
 
 /* ======================================
    Calendário
 ======================================== */
-.calendario {
-  margin-bottom: 30px;
+.calendario-container {
+  margin-bottom: 24px;
 }
 
 .calendario-header {
@@ -158,31 +184,31 @@
 }
 
 .calendario-mes {
-  font-size: clamp(16px, 4vw, 20px);
-  font-weight: 700;
-  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  flex: 1;
+  text-align: center;
 }
 
-.calendario-nav {
-  display: flex;
-  gap: 12px;
-}
-
-.btn-nav {
-  width: 36px;
-  height: 36px;
+.btn-nav-calendar {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
+  background: white;
+  color: #374151;
+  font-size: 18px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
-.btn-nav:hover {
-  transform: scale(1.1);
+.btn-nav-calendar:hover {
+  background: #f9fafb;
+  border-color: #667eea;
 }
 
 .calendario-grid {
@@ -193,11 +219,12 @@
 
 .dia-semana {
   text-align: center;
-  font-size: clamp(10px, 2vw, 12px);
+  font-size: 13px;
   font-weight: 600;
-  color: #777;
-  padding: 8px 4px;
+  color: #6b7280;
+  padding: 8px 0;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .dia-mes {
@@ -205,433 +232,447 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  font-weight: 600;
-  font-size: clamp(13px, 3vw, 15px);
-  background: #f5f6fa;
-  color: #333;
 }
 
-.dia-mes.disabled {
-  background: transparent;
-  color: #ccc;
-  cursor: not-allowed;
-}
-
-.dia-mes.disponivel:hover {
-  background: #e8e9f3;
-  transform: scale(1.1);
+.dia-mes:hover {
+  border-color: #667eea;
+  background: #f9fafb;
 }
 
 .dia-mes.selected {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  border-color: #667eea;
+  font-weight: 600;
+}
+
+.dia-mes.disabled {
+  background: #f9fafb;
+  color: #d1d5db;
+  cursor: not-allowed;
+  border-color: #f3f4f6;
+}
+
+.dia-mes.disabled:hover {
+  background: #f9fafb;
+  border-color: #f3f4f6;
+}
+
+.dia-mes.outro-mes {
+  color: #d1d5db;
 }
 
 /* ======================================
-   Seleção de Horários
+   Horários
 ======================================== */
 .horarios-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 12px;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
-.horario-option {
-  padding: 14px;
-  border-radius: 10px;
+.horario-slot {
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
   text-align: center;
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  font-weight: 600;
-  font-size: clamp(13px, 3vw, 15px);
+  color: #374151;
 }
 
-.horario-option:hover {
-  transform: translateY(-2px);
-}
-
-.horario-option.selected {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.horario-slot:hover {
   border-color: #667eea;
+  background: #f9fafb;
+}
+
+.horario-slot.selected {
+  background: #667eea;
   color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  border-color: #667eea;
+  font-weight: 600;
 }
 
-.horario-option.disabled {
-  background: #fafafa;
-  border-color: #e0e0e0;
-  color: #ccc;
+.horario-slot.disabled {
+  background: #f9fafb;
+  color: #d1d5db;
   cursor: not-allowed;
-}
-
-.horario-option.disabled:hover {
-  transform: none;
+  border-color: #f3f4f6;
 }
 
 /* ======================================
    Formulário de Dados
 ======================================== */
-.form-public {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
 .form-group-public {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-bottom: 20px;
 }
 
-.form-group-public label {
-  font-size: clamp(13px, 2.5vw, 14px);
+.form-label-public {
+  display: inline-block !important;
+  font-size: 14px;
   font-weight: 600;
-  color: #555;
+  color: #374151;
+  margin-bottom: 8px;
+  width: auto !important;
 }
 
-.form-group-public input,
-.form-group-public textarea,
-.form-group-public select {
-  padding: 14px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: clamp(14px, 3vw, 15px);
-  transition: all 0.2s;
-  font-family: inherit;
+.form-input-public {
   width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #111827;
+  transition: all 0.2s;
+  outline: none;
+  background: white;
 }
 
-.form-group-public input:focus,
-.form-group-public textarea:focus,
-.form-group-public select:focus {
+.form-input-public:hover {
+  border-color: #9ca3af;
+}
+
+.form-input-public:focus {
   border-color: #667eea;
-  outline: none;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.form-group-public textarea {
+.form-input-public::placeholder {
+  color: #9ca3af;
+}
+
+textarea.form-input-public {
   min-height: 100px;
   resize: vertical;
+  font-family: inherit;
 }
 
 /* ======================================
-   Botões de Ação
+   Resumo do Agendamento
 ======================================== */
-.btn-public {
-  padding: 16px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
+.resumo-agendamento {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  font-size: clamp(14px, 3vw, 16px);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  width: 100%;
+  padding: 20px;
+  margin-bottom: 24px;
 }
 
-.btn-public:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-}
-
-.btn-public:active {
-  transform: translateY(0);
-}
-
-.btn-public:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.btn-voltar {
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-size: clamp(13px, 3vw, 15px);
+.resumo-agendamento h3 {
+  font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-}
-
-.btn-voltar:hover {
-  transform: translateY(-2px);
-}
-
-/* ======================================
-   Página de Sucesso
-======================================== */
-.sucesso-container {
-  text-align: center;
-  padding: 60px 30px;
-}
-
-.sucesso-icon {
-  font-size: clamp(60px, 15vw, 80px);
-  margin-bottom: 30px;
-  animation: bounce 1s ease-in-out;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}
-
-.sucesso-titulo {
-  font-size: clamp(24px, 6vw, 32px);
-  font-weight: 700;
-  color: #4caf50;
+  color: #111827;
   margin-bottom: 16px;
+  margin-top: 0;
 }
 
-.sucesso-mensagem {
-  font-size: clamp(16px, 3.5vw, 18px);
-  color: #666;
-  margin-bottom: 30px;
-  line-height: 1.6;
-}
-
-.sucesso-detalhes {
-  background: #f5f6fa;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 30px;
-  text-align: left;
-}
-
-.sucesso-detalhes-item {
+.resumo-item {
   display: flex;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #e0e0e0;
-  gap: 12px;
-  flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
 }
 
-.sucesso-detalhes-item:last-child {
+.resumo-item:last-child {
   border-bottom: none;
 }
 
-.sucesso-detalhes-label {
-  font-weight: 600;
-  color: #555;
-  font-size: clamp(13px, 3vw, 14px);
+.resumo-label {
+  color: #6b7280;
+  font-weight: 500;
 }
 
-.sucesso-detalhes-valor {
-  color: #333;
-  font-size: clamp(13px, 3vw, 14px);
+.resumo-value {
+  color: #111827;
+  font-weight: 600;
   text-align: right;
 }
 
 /* ======================================
-   Loading / Mensagens
+   Botões
 ======================================== */
-.loading {
+.btn-public {
+  width: 100%;
+  padding: 14px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.btn-public:hover {
+  background: #5568d3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-public:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary-public {
+  width: 100%;
+  padding: 14px 24px;
+  background: white;
+  color: #667eea;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.btn-secondary-public:hover {
+  background: #f9fafb;
+  border-color: #667eea;
+}
+
+/* ======================================
+   Loading & Empty States
+======================================== */
+.loading-public {
   text-align: center;
   padding: 60px 20px;
-  color: white;
-  font-size: clamp(16px, 4vw, 18px);
+  color: #6b7280;
 }
 
-.erro-mensagem {
-  background: #fff3cd;
-  border: 2px solid #ffc107;
-  border-radius: 12px;
-  padding: 20px;
-  color: #856404;
+.loading-icon-public {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state-public {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: clamp(13px, 3vw, 14px);
+  padding: 60px 20px;
+  color: #6b7280;
 }
 
-/* ===================================
-   RESPONSIVO - TABLET
-===================================== */
-@media (max-width: 1024px) {
-  .public-container {
-    padding: 16px 20px 30px;
-  }
-
-  .public-wrapper {
-    max-width: 700px;
-  }
-
-  .servicos-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
-  }
-
-  .horarios-grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  }
+.empty-icon-public {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
 }
 
-/* ===================================
-   RESPONSIVO - MOBILE
-===================================== */
+/* ======================================
+   Mensagem de Sucesso
+======================================== */
+.sucesso-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.sucesso-icon {
+  font-size: 80px;
+  margin-bottom: 24px;
+}
+
+.sucesso-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.sucesso-message {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* ======================================
+   Stepper (Passos)
+======================================== */
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.stepper::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #e5e7eb;
+  z-index: 0;
+}
+
+.step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: #9ca3af;
+  transition: all 0.2s;
+}
+
+.step.active .step-number {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+.step.completed .step-number {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+.step-label {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 500;
+  text-align: center;
+}
+
+.step.active .step-label {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.step.completed .step-label {
+  color: #10b981;
+}
+
+/* ======================================
+   Responsivo
+======================================== */
 @media (max-width: 768px) {
   .public-container {
-    padding: 12px 15px 20px;
+    padding: 16px;
   }
 
-  .loja-header {
-    padding: 20px;
-  }
-
-  .loja-logo {
-    width: 80px;
-    height: 80px;
-  }
-
-  .loja-info {
-    flex-direction: column;
-    gap: 8px;
-  }
-
+  .loja-header,
   .public-card {
     padding: 20px;
   }
 
   .servicos-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
   }
 
-  .servico-option {
-    padding: 16px;
-  }
-
-  .horarios-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  .horario-option {
-    padding: 12px 8px;
-  }
-
-  .calendario-grid {
-    gap: 6px;
-  }
-
-  .dia-semana {
-    padding: 6px 2px;
-  }
-
-  .btn-public {
-    padding: 14px 24px;
-  }
-
-  .sucesso-container {
-    padding: 40px 20px;
-  }
-
-  .sucesso-detalhes {
-    padding: 20px;
-  }
-
-  .sucesso-detalhes-item {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .sucesso-detalhes-valor {
-    text-align: left;
-  }
-}
-
-/* ===================================
-   RESPONSIVO - MOBILE PEQUENO
-===================================== */
-@media (max-width: 480px) {
-  .public-container {
-    padding: 8px 12px 16px;
-  }
-
-  .loja-header {
-    padding: 16px;
-  }
-
-  .loja-logo {
-    width: 70px;
-    height: 70px;
-  }
-
-  .public-card {
-    padding: 16px;
-  }
-
-  .calendario-grid {
-    gap: 4px;
-  }
-
-  .dia-mes {
-    border-radius: 6px;
-  }
-
-  .btn-nav {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
+  .profissionais-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   .horarios-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
     gap: 8px;
   }
 
-  .btn-public,
-  .btn-voltar {
-    padding: 12px 20px;
+  .stepper {
+    margin-bottom: 24px;
   }
 
-  .form-group-public input,
-  .form-group-public textarea,
-  .form-group-public select {
-    padding: 12px;
+  .step-label {
+    font-size: 11px;
   }
 
-  .sucesso-container {
-    padding: 30px 16px;
-  }
-
-  .sucesso-detalhes {
-    padding: 16px;
+  .step-number {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
   }
 }
 
-/* ===================================
-   LANDSCAPE MOBILE
-===================================== */
-@media (max-width: 900px) and (max-height: 500px) {
+@media (max-width: 480px) {
   .public-container {
-    padding: 8px 15px 20px;
+    padding: 12px;
   }
 
-  .loja-header {
-    padding: 12px 16px;
-  }
-
+  .loja-header,
   .public-card {
     padding: 16px;
+    border-radius: 8px;
   }
 
   .calendario-grid {
-    gap: 6px;
+    gap: 4px;
   }
 
   .dia-mes {
     font-size: 13px;
   }
+
+  .horarios-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ======================================
+   Info Card do Serviço
+======================================== */
+.servico-info-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.servico-info-card h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.servico-detalhes {
+  display: flex;
+  gap: 20px;
+  font-size: 16px;
+  color: #374151;
+  flex-wrap: wrap;
+}
+
+.servico-detalhes span {
+  font-weight: 500;
+}
+
+/* Asterisco obrigatório */
+.required {
+  color: #ef4444;
+  margin-left: 4px;
+  display: inline !important;
 }

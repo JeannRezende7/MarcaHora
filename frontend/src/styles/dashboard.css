@@ -16,75 +16,119 @@
 }
 
 /* ======================================
-   KPI Cards (Indicadores)
+   KPI Cards (Indicadores) - Modernos
 ======================================== */
 .kpi-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  gap: 24px;
   margin-bottom: 40px;
 }
 
 .kpi-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  color: white;
-  transition: transform 0.2s;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s;
+  cursor: pointer;
 }
 
 .kpi-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
 }
 
-.kpi-title {
-  font-size: clamp(12px, 2.5vw, 14px);
+.kpi-icon-modern {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.kpi-purple .kpi-icon-modern {
+  background: #f3f4ff;
+}
+
+.kpi-green .kpi-icon-modern {
+  background: #f0fdf4;
+}
+
+.kpi-orange .kpi-icon-modern {
+  background: #fff7ed;
+}
+
+.kpi-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kpi-label {
+  font-size: 13px;
   font-weight: 500;
-  opacity: 0.9;
+  color: #6b7280;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.kpi-number {
-  font-size: clamp(32px, 8vw, 42px);
+.kpi-value {
+  font-size: 32px;
   font-weight: 700;
-  letter-spacing: -1px;
+  color: #111827;
+  line-height: 1;
+}
+
+.kpi-purple .kpi-value {
+  color: #667eea;
+}
+
+.kpi-green .kpi-value {
+  color: #10b981;
+}
+
+.kpi-orange .kpi-value {
+  color: #f59e0b;
 }
 
 .kpi-input {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: white;
+  border: 2px solid #e5e7eb;
   border-radius: 8px;
   padding: 12px;
-  color: white;
+  color: #111827;
   font-size: clamp(13px, 3vw, 14px);
   width: 100%;
   cursor: text;
+  transition: all 0.2s;
+}
+
+.kpi-input:focus {
+  border-color: #667eea;
+  outline: none;
 }
 
 .kpi-input::selection {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.kpi-card small {
-  font-size: clamp(11px, 2vw, 12px);
-  opacity: 0.8;
-  margin-top: -6px;
+  background: #ddd6fe;
 }
 
 /* ======================================
-   Seção de Agendamentos
+   Seção de Agendamentos - Moderna
 ======================================== */
 .section {
   background: white;
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  margin-bottom: 30px;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 24px;
 }
 
 .section-header {
@@ -97,26 +141,29 @@
 }
 
 .section-header h3 {
-  font-size: clamp(17px, 4vw, 20px);
+  font-size: clamp(17px, 4vw, 19px);
   font-weight: 600;
-  color: #333;
+  color: #111827;
+  margin: 0;
 }
 
 .btn-light {
-  padding: 10px 20px;
-  background: #f5f6fa;
-  border: none;
-  border-radius: 8px;
+  padding: 8px 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
   color: #667eea;
   font-weight: 600;
   font-size: clamp(13px, 2.5vw, 14px);
   transition: all 0.2s;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .btn-light:hover {
-  background: #e8e9f3;
-  transform: translateY(-2px);
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
 }
 
 .card-empty {
@@ -152,63 +199,71 @@
 
 .bottom-grid .card {
   background: white;
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
 }
 
 .bottom-grid .card h3 {
-  font-size: clamp(16px, 3.5vw, 18px);
+  font-size: clamp(16px, 3.5vw, 17px);
   font-weight: 600;
-  color: #333;
+  color: #111827;
   margin-bottom: 20px;
 }
 
-/* Botões de Ações */
+/* Botões de Ações - Modernos */
 .btn-purple,
 .btn-green,
 .btn-white {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 600;
-  font-size: clamp(13px, 3vw, 15px);
+  font-size: clamp(13px, 3vw, 14px);
   margin-bottom: 12px;
   transition: all 0.2s;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-purple {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #667eea;
   color: white;
+  border: 1px solid #667eea;
 }
 
 .btn-purple:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: #5568d3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .btn-green {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  background: #10b981;
   color: white;
+  border: 1px solid #10b981;
 }
 
 .btn-green:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .btn-white {
   background: white;
   color: #667eea;
-  border: 2px solid #e8e9f3;
+  border: 1px solid #e5e7eb;
 }
 
 .btn-white:hover {
-  background: #f5f6fa;
+  background: #f9fafb;
   border-color: #667eea;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 /* Lista de Dicas */

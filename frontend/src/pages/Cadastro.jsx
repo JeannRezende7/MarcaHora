@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import "../styles/cadastro.css";
+import "../styles/auth.css";
+import "../styles/auth-override.css";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Cadastro() {
   const [usaServicos, setUsaServicos] = useState(false);
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
   async function handleCadastrar(e) {
     e.preventDefault();
@@ -28,6 +30,8 @@ export default function Cadastro() {
       return;
     }
 
+    setCarregando(true);
+
     const payload = {
       nome: nomeLoja,
       email,
@@ -37,122 +41,217 @@ export default function Cadastro() {
       senha
     };
 
-    const resp = await api.post("/api/cadastro/loja", payload);
+    console.log("📤 Enviando payload:", payload);
+    console.log("✅ usaProfissionais:", usaProfissionais);
+    console.log("✅ usaServicos:", usaServicos);
 
-    if (resp.data.sucesso) {
-      alert("Loja criada com sucesso!");
-      navigate("/login");
+    try {
+      const resp = await api.post("/api/cadastro/loja", payload);
+      
+      console.log("📥 Resposta do servidor:", resp.data);
+      
+      setCarregando(false);
+
+      if (resp.data.sucesso) {
+        alert("Loja criada com sucesso!");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("❌ Erro ao cadastrar:", error);
+      alert("Erro ao criar loja: " + (error.response?.data || error.message));
+      setCarregando(false);
     }
   }
 
   return (
-    <div className="cadastro-wrapper">
-      <h1>Cadastrar Loja</h1>
-
-      <label>Código de Cadastro *</label>
-      <input
-        type="text"
-        placeholder="Solicite o código ao administrador"
-        value={codigoCadastro}
-        onChange={(e) => setCodigoCadastro(e.target.value)}
-      />
-      <small>Entre em contato para obter o código</small>
-
-      <label>Nome da Loja *</label>
-      <input
-        type="text"
-        placeholder="Ex: Salão Beleza Pura"
-        value={nomeLoja}
-        onChange={(e) => setNomeLoja(e.target.value)}
-      />
-
-      <label>E-mail *</label>
-      <input
-        type="email"
-        placeholder="contato@sualoja.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <label>Telefone *</label>
-      <input
-        type="tel"
-        placeholder="(00) 00000-0000"
-        value={telefone}
-        onChange={(e) => setTelefone(e.target.value)}
-      />
-
-      <label>Usa profissionais específicos?</label>
-      <div className="radio-group">
-        <div className="radio-option">
-          <input
-            type="radio"
-            name="prof"
-            value="sim"
-            onChange={() => setUsaProfissionais(true)}
-          />
-          <span>Sim (agenda por profissional)</span>
+    <div className="auth-container">
+      <div className="auth-card auth-card-large">
+        <div className="auth-header">
+          <div className="auth-logo">📅</div>
+          <h1>Criar sua conta</h1>
+          <p>Preencha os dados para começar</p>
         </div>
 
-        <div className="radio-option">
-          <input
-            type="radio"
-            name="prof"
-            value="nao"
-            defaultChecked
-            onChange={() => setUsaProfissionais(false)}
-          />
-          <span>Não (agenda única)</span>
+        <form onSubmit={handleCadastrar} className="auth-form">
+          
+          {/* Código */}
+          <div className="form-group">
+            <label className="form-label">
+              Código de Cadastro <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Solicite o código ao administrador"
+              value={codigoCadastro}
+              onChange={(e) => setCodigoCadastro(e.target.value)}
+              required
+            />
+            <small className="form-hint">Entre em contato para obter o código</small>
+          </div>
+
+          {/* Nome da Loja */}
+          <div className="form-group">
+            <label className="form-label">
+              Nome da Loja <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Ex: Salão Beleza Pura"
+              value={nomeLoja}
+              onChange={(e) => setNomeLoja(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Email */}
+          <div className="form-group">
+            <label className="form-label">
+              E-mail <span className="required">*</span>
+            </label>
+            <input
+              type="email"
+              className="form-input"
+              placeholder="contato@sualoja.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Telefone */}
+          <div className="form-group">
+            <label className="form-label">
+              Telefone <span className="required">*</span>
+            </label>
+            <input
+              type="tel"
+              className="form-input"
+              placeholder="(00) 00000-0000"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Profissionais */}
+          <div className="form-group">
+            <label className="form-label">Usa profissionais específicos?</label>
+            <div className="radio-group-modern">
+              <label className="radio-option-modern">
+                <input
+                  type="radio"
+                  name="prof"
+                  value="sim"
+                  checked={usaProfissionais === true}
+                  onChange={() => {
+                    console.log("🔵 Mudou para: Usa Profissionais = TRUE");
+                    setUsaProfissionais(true);
+                  }}
+                />
+                <span>Sim (agenda por profissional)</span>
+              </label>
+
+              <label className="radio-option-modern">
+                <input
+                  type="radio"
+                  name="prof"
+                  value="nao"
+                  checked={usaProfissionais === false}
+                  onChange={() => {
+                    console.log("🔵 Mudou para: Usa Profissionais = FALSE");
+                    setUsaProfissionais(false);
+                  }}
+                />
+                <span>Não (agenda única)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Serviços */}
+          <div className="form-group">
+            <label className="form-label">Trabalha com serviços predefinidos?</label>
+            <div className="radio-group-modern">
+              <label className="radio-option-modern">
+                <input
+                  type="radio"
+                  name="serv"
+                  value="sim"
+                  checked={usaServicos === true}
+                  onChange={() => {
+                    console.log("🟢 Mudou para: Usa Serviços = TRUE");
+                    setUsaServicos(true);
+                  }}
+                />
+                <span>Sim (ex: corte, manicure)</span>
+              </label>
+
+              <label className="radio-option-modern">
+                <input
+                  type="radio"
+                  name="serv"
+                  value="nao"
+                  checked={usaServicos === false}
+                  onChange={() => {
+                    console.log("🟢 Mudou para: Usa Serviços = FALSE");
+                    setUsaServicos(false);
+                  }}
+                />
+                <span>Não (reserva livre)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Senha */}
+          <div className="form-group">
+            <label className="form-label">
+              Senha <span className="required">*</span>
+            </label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Mínimo 6 caracteres"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
+
+          {/* Confirmar Senha */}
+          <div className="form-group">
+            <label className="form-label">
+              Confirmar Senha <span className="required">*</span>
+            </label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="Digite a senha novamente"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
+              required
+              minLength={6}
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            className="btn-primary"
+            disabled={carregando}
+          >
+            {carregando ? 'Criando conta...' : 'Cadastrar'}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <p>Já tem uma conta? {' '}
+            <a onClick={() => navigate("/login")} className="auth-link">
+              Fazer login
+            </a>
+          </p>
         </div>
       </div>
-
-      <label>Trabalha com serviços predefinidos?</label>
-      <div className="radio-group">
-        <div className="radio-option">
-          <input
-            type="radio"
-            name="serv"
-            value="sim"
-            onChange={() => setUsaServicos(true)}
-          />
-          <span>Sim (ex: corte, manicure)</span>
-        </div>
-
-        <div className="radio-option">
-          <input
-            type="radio"
-            name="serv"
-            value="nao"
-            defaultChecked
-            onChange={() => setUsaServicos(false)}
-          />
-          <span>Não (reserva livre — restaurantes)</span>
-        </div>
-      </div>
-
-      <label>Senha *</label>
-      <input
-        type="password"
-        placeholder="Mínimo 6 caracteres"
-        value={senha}
-        onChange={(e) => setSenha(e.target.value)}
-      />
-
-      <label>Confirmar Senha *</label>
-      <input
-        type="password"
-        placeholder="Digite a senha novamente"
-        value={confirmarSenha}
-        onChange={(e) => setConfirmarSenha(e.target.value)}
-      />
-
-      <button onClick={handleCadastrar}>
-        Cadastrar
-      </button>
-
-      <a onClick={() => navigate("/login")}>
-        Já tem uma conta? Faça login
-      </a>
     </div>
   );
 }

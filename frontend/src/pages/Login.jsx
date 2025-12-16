@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import "../styles/login.css";
+import "../styles/auth.css";
+import "../styles/auth-override.css";
 
 export default function Login() {
   const { loginRequest } = useAuth();
@@ -9,45 +10,87 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState("");
 
   async function handleLogin(e) {
     e.preventDefault();
+    setErro("");
+    setCarregando(true);
 
-    const ok = await loginRequest(email, senha);
-    if (ok !== false) {
-      navigate("/");
-    } else {
-      alert("E-mail ou senha incorretos!");
+    try {
+      const ok = await loginRequest(email, senha);
+      
+      if (ok !== false) {
+        navigate("/");
+      } else {
+        setErro("E-mail ou senha incorretos!");
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+      setErro("E-mail ou senha incorretos!");
+    } finally {
+      setCarregando(false);
     }
   }
 
   return (
-    <div className="login-wrapper">
-      <h1>Entrar</h1>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <div className="auth-logo">📅</div>
+          <h1>Bem-vindo de volta</h1>
+          <p>Faça login para acessar sua conta</p>
+        </div>
 
-      <label>E-mail</label>
-      <input
-        type="email"
-        placeholder="seuemail@exemplo.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <form onSubmit={handleLogin} className="auth-form">
+          <div className="form-group">
+            <label className="form-label">E-mail</label>
+            <input
+              type="email"
+              className="form-input"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-      <label>Senha</label>
-      <input
-        type="password"
-        placeholder="Digite sua senha"
-        value={senha}
-        onChange={(e) => setSenha(e.target.value)}
-      />
+          <div className="form-group">
+            <label className="form-label">Senha</label>
+            <input
+              type="password"
+              className="form-input"
+              placeholder="••••••••"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
+            />
+          </div>
 
-      <button onClick={handleLogin}>
-        Entrar
-      </button>
+          {erro && (
+            <div className="erro-box">
+              ⚠️ {erro}
+            </div>
+          )}
 
-      <a onClick={() => navigate("/cadastro")} className="cadastro-link">
-        Não tem conta? Cadastre-se
-      </a>
+          <button 
+            type="submit" 
+            className="btn-primary"
+            disabled={carregando}
+          >
+            {carregando ? 'Entrando...' : 'Entrar'}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <p>Não tem uma conta? {' '}
+            <a onClick={() => navigate("/cadastro")} className="auth-link">
+              Cadastre-se
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

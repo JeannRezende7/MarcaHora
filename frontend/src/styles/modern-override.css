@@ -1,0 +1,74 @@
+/* ============================================
+   OVERRIDE - Layout Moderno (Força aplicação)
+============================================ */
+
+/* Topbar Branca Moderna */
+.topbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+.logo {
+  color: #667eea !important;
+}
+
+.logo span {
+  color: #1f2937 !important;
+}
+
+.menu a {
+  color: #6b7280 !important;
+}
+
+.menu a:hover {
+  background: #f9fafb !important;
+  color: #111827 !important;
+}
+
+.menu a.active {
+  background: #f3f4f6 !important;
+  color: #667eea !important;
+}
+
+/* Background do App */
+html,
+body,
+#root,
+.app {
+  background: #ffffff !important;
+}
+
+.main-container {
+  background: #ffffff !important;
+}
+
+/* KPI Cards Modernos - Brancos */
+.kpi-card {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+.kpi-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Seções Brancas */
+.section {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+.bottom-grid .card {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+}
+
+/* Botões Modernos */
+.btn-sair {
+  background: #667eea !important;
+  color: white !important;
+}

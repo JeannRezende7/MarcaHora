@@ -87,25 +87,34 @@ export default function Dashboard() {
 
       {/* Saudação */}
       <h2 className="titulo">
-        👋 Bem-vindo, {usuario?.nome?.split(" ")[0]}!
+        👋 Bem-vindo!
       </h2>
 
       {/* KPIs */}
       <div className="kpi-row">
         
-        <div className="kpi-card">
-          <span className="kpi-title">Agendamentos Hoje</span>
-          <span className="kpi-number">{agendamentosHoje.length}</span>
+        <div className="kpi-card kpi-purple">
+          <div className="kpi-icon-modern">📅</div>
+          <div className="kpi-content">
+            <span className="kpi-label">Agendamentos Hoje</span>
+            <span className="kpi-value">{agendamentosHoje.length}</span>
+          </div>
         </div>
 
-        <div className="kpi-card" style={{ background: 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)' }}>
-          <span className="kpi-title">Total de Clientes</span>
-          <span className="kpi-number">{estatisticas.totalClientes}</span>
+        <div className="kpi-card kpi-green">
+          <div className="kpi-icon-modern">👥</div>
+          <div className="kpi-content">
+            <span className="kpi-label">Total de Clientes</span>
+            <span className="kpi-value">{estatisticas.totalClientes}</span>
+          </div>
         </div>
 
-        <div className="kpi-card" style={{ background: 'linear-gradient(135deg, #ff9800 0%, #f57c00 100%)' }}>
-          <span className="kpi-title">Serviços Cadastrados</span>
-          <span className="kpi-number">{estatisticas.totalServicos}</span>
+        <div className="kpi-card kpi-orange">
+          <div className="kpi-icon-modern">🔧</div>
+          <div className="kpi-content">
+            <span className="kpi-label">Serviços Cadastrados</span>
+            <span className="kpi-value">{estatisticas.totalServicos}</span>
+          </div>
         </div>
 
       </div>
@@ -272,13 +281,7 @@ export default function Dashboard() {
             className="btn-green"
             onClick={() => navigate('/servicos')}
           >
-            ➕ Gerenciar Serviços
-          </button>
-          <button 
-            className="btn-white"
-            onClick={() => navigate('/configuracoes')}
-          >
-            ⚙️ Configurações
+            ⚙️ Gerenciar Serviços
           </button>
         </div>
 
@@ -289,8 +292,6 @@ export default function Dashboard() {
             <li>✅ Compartilhe o link nas redes sociais</li>
             <li>✅ Configure horários de funcionamento</li>
             <li>✅ Cadastre todos os seus serviços</li>
-            <li>✅ Personalize cores e logo da sua loja</li>
-            <li>✅ Responda rapidamente aos clientes</li>
           </ul>
         </div>
 

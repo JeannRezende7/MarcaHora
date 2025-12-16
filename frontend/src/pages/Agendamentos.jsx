@@ -64,60 +64,59 @@ export default function Agendamentos() {
     ? lista 
     : lista.filter(ag => ag.status === filtroStatus);
 
-  const statusCores = {
-    'AGENDADO': '#4caf50',
-    'CONFIRMADO': '#2196f3',
-    'CANCELADO': '#f44336',
-    'CONCLUIDO': '#9c27b0'
+  const statusInfo = {
+    'AGENDADO': { cor: '#10b981', bg: '#f0fdf4' },
+    'CONFIRMADO': { cor: '#3b82f6', bg: '#eff6ff' },
+    'CANCELADO': { cor: '#ef4444', bg: '#fef2f2' },
+    'CONCLUIDO': { cor: '#8b5cf6', bg: '#f5f3ff' }
   };
 
   return (
     <div className="page">
-      <h1>📅 Agendamentos</h1>
+      <div className="page-header">
+        <h1>📅 Agendamentos</h1>
+        <p className="page-subtitle">Gerencie os agendamentos da sua loja</p>
+      </div>
 
-      {/* Controles */}
-      <div className="agendamentos-controles">
-        <div className="filtro-data">
-          <label>Data:</label>
+      {/* Controles Modernos */}
+      <div className="agendamentos-controles-modern">
+        <div className="controle-group">
+          <label className="controle-label">Data</label>
           <input 
             type="date" 
             value={data} 
             onChange={(e) => setData(e.target.value)}
+            className="input-modern"
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="controle-nav">
           <button 
-            className="btn-hoje"
+            className="btn-nav"
             onClick={() => mudarDia(-1)}
           >
             ← Anterior
           </button>
           <button 
-            className="btn-hoje"
+            className="btn-today"
             onClick={irParaHoje}
           >
             Hoje
           </button>
           <button 
-            className="btn-hoje"
+            className="btn-nav"
             onClick={() => mudarDia(1)}
           >
             Próximo →
           </button>
         </div>
 
-        <div className="filtro-data">
-          <label>Status:</label>
+        <div className="controle-group">
+          <label className="controle-label">Status</label>
           <select 
             value={filtroStatus}
             onChange={(e) => setFiltroStatus(e.target.value)}
-            style={{
-              padding: '10px 14px',
-              border: '2px solid #e0e0e0',
-              borderRadius: '8px',
-              fontSize: '15px'
-            }}
+            className="select-modern"
           >
             <option value="TODOS">Todos</option>
             <option value="AGENDADO">Agendado</option>
@@ -128,124 +127,106 @@ export default function Agendamentos() {
         </div>
       </div>
 
-      {/* Data Selecionada */}
-      <div style={{
-        background: 'white',
-        padding: '20px',
-        borderRadius: '12px',
-        marginBottom: '24px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-      }}>
-        <div style={{ 
-          fontSize: '18px', 
-          fontWeight: '600',
-          color: '#333',
-          textTransform: 'capitalize'
-        }}>
+      {/* Info Card */}
+      <div className="info-card">
+        <div className="info-main">
           {formatarData(data)}
         </div>
-        <div style={{ 
-          fontSize: '14px',
-          color: '#777',
-          marginTop: '4px'
-        }}>
-          {listaFiltrada.length} agendamento(s) {filtroStatus !== 'TODOS' && `· Status: ${filtroStatus}`}
+        <div className="info-sub">
+          {listaFiltrada.length} agendamento(s) {filtroStatus !== 'TODOS' && `· ${filtroStatus}`}
         </div>
       </div>
 
       {/* Loading */}
       {carregando && (
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '60px',
-          background: 'white',
-          borderRadius: '12px'
-        }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⏳</div>
-          <p style={{ color: '#999' }}>Carregando agendamentos...</p>
+        <div className="loading-state">
+          <div className="loading-icon">⏳</div>
+          <p>Carregando agendamentos...</p>
         </div>
       )}
 
       {/* Lista Vazia */}
       {!carregando && listaFiltrada.length === 0 && (
-        <div className="agendamentos-vazio">
-          <div className="agendamentos-vazio-icon">📭</div>
-          <p>Nenhum agendamento encontrado</p>
-          <small style={{ color: '#bbb', display: 'block', marginTop: '8px' }}>
+        <div className="empty-state-modern">
+          <div className="empty-icon">📭</div>
+          <h3>Nenhum agendamento encontrado</h3>
+          <p>
             {filtroStatus !== 'TODOS' 
               ? 'Tente outro filtro ou data' 
               : 'Nenhum agendamento para esta data'}
-          </small>
+          </p>
         </div>
       )}
 
       {/* Lista de Agendamentos */}
       {!carregando && listaFiltrada.length > 0 && (
-        <div className="agendamentos-lista">
+        <div className="agendamentos-grid">
           {listaFiltrada.map((ag) => (
-            <div key={ag.id} className="agendamento-card">
+            <div key={ag.id} className="agendamento-card-modern">
               
               {/* Horário */}
-              <div className="agendamento-horario">
-                <div className="agendamento-hora">
+              <div className="card-time">
+                <div className="time-badge">
                   {formatarHora(ag.dataHora)}
                 </div>
               </div>
 
-              {/* Informações */}
-              <div className="agendamento-info">
-                <div className="agendamento-cliente">
+              {/* Conteúdo */}
+              <div className="card-content">
+                <h3 className="card-title">
                   {ag.cliente?.nome || 'Cliente'}
-                </div>
+                </h3>
+                
                 {ag.servico && (
-                  <div className="agendamento-servico">
+                  <div className="card-service">
                     {ag.servico.nome || ag.servico.descricao}
                   </div>
                 )}
-                <div className="agendamento-detalhes">
+
+                <div className="card-details">
                   {ag.profissional && (
-                    <span>👤 {ag.profissional.nome}</span>
+                    <span className="detail-item">
+                      <span className="detail-icon">👤</span>
+                      {ag.profissional.nome}
+                    </span>
                   )}
                   {ag.cliente?.telefone && (
-                    <span>📱 {ag.cliente.telefone}</span>
-                  )}
-                  {ag.cliente?.email && (
-                    <span>📧 {ag.cliente.email}</span>
+                    <span className="detail-item">
+                      <span className="detail-icon">📱</span>
+                      {ag.cliente.telefone}
+                    </span>
                   )}
                 </div>
+
                 {ag.observacoes && (
-                  <div style={{ 
-                    marginTop: '8px',
-                    fontSize: '13px',
-                    color: '#666',
-                    fontStyle: 'italic'
-                  }}>
+                  <div className="card-note">
                     💬 {ag.observacoes}
                   </div>
                 )}
               </div>
 
               {/* Status e Ações */}
-              <div className="agendamento-status">
-                <div 
-                  className="badge"
+              <div className="card-footer">
+                <span 
+                  className="status-badge"
                   style={{ 
-                    background: statusCores[ag.status] || '#999'
+                    background: statusInfo[ag.status]?.bg || '#f3f4f6',
+                    color: statusInfo[ag.status]?.cor || '#6b7280'
                   }}
                 >
                   {ag.status || 'AGENDADO'}
-                </div>
+                </span>
 
-                <div className="agendamento-acoes">
+                <div className="card-actions">
                   <button 
-                    className="btn-icon btn-visualizar"
+                    className="btn-action"
                     title="Ver detalhes"
                   >
                     👁️
                   </button>
                   {ag.status !== 'CANCELADO' && (
                     <button 
-                      className="btn-icon btn-cancelar"
+                      className="btn-action btn-danger"
                       title="Cancelar"
                     >
                       ✖️

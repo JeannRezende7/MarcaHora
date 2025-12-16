@@ -28,7 +28,7 @@ public class CadastroController {
         String email = (String) body.get("email");
         String telefone = (String) body.get("telefone");
         Boolean usaProfissionais = (Boolean) body.getOrDefault("usaProfissionais", false);
-        Boolean temServicos = (Boolean) body.getOrDefault("temServicos", true);
+        Boolean usaServicos = (Boolean) body.getOrDefault("usaServicos", false);
         String senha = (String) body.get("senha");
 
         if (nome == null || nome.isBlank()) {
@@ -51,7 +51,7 @@ public class CadastroController {
         loja.setAtiva(true);
 
         loja.setUsaProfissionais(usaProfissionais);
-        loja.setUsaServicos(temServicos);
+        loja.setUsaServicos(usaServicos);
         loja.setTipoNegocio("servico");
 
         // CONFIGS ESSENCIAIS (antes eram null!)

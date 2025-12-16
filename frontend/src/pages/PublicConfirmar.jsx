@@ -27,18 +27,15 @@ export default function PublicConfirmar() {
   useEffect(() => {
     async function carregar() {
       try {
-        // Carregar loja
         const respLoja = await api.get(`/public/loja/${lojaId}`);
         const lojaData = respLoja.data.loja;
         setLoja(lojaData);
 
-        // Carregar serviço se necessário
         if (lojaData.usaServicos && servicoId !== "0") {
           const respServico = await api.get(`/api/servicos/${servicoId}`);
           setServico(respServico.data);
         }
 
-        // Carregar profissional se veio na URL
         const profissionalId = searchParams.get('profissionalId');
         if (profissionalId) {
           try {
@@ -49,7 +46,6 @@ export default function PublicConfirmar() {
           }
         }
 
-        // Carregar campos personalizados
         const respCampos = await api.get(`/api/configuracoes/${lojaId}/campos-personalizados`);
         setCamposPersonalizados(respCampos.data || []);
 
@@ -77,7 +73,6 @@ export default function PublicConfirmar() {
 
     setErro("");
 
-    // Validações conforme configuração da loja
     if (loja.mostrarNome && loja.obrigarNome && nome.trim() === "") {
       return setErro("O nome é obrigatório.");
     }
@@ -88,14 +83,12 @@ export default function PublicConfirmar() {
       return setErro("O e-mail é obrigatório.");
     }
 
-    // Validação dos campos personalizados obrigatórios
     for (let campo of camposPersonalizados) {
       if (campo.obrigatorio && (!respostas[campo.id] || respostas[campo.id].trim() === "")) {
         return setErro(`O campo "${campo.pergunta}" é obrigatório.`);
       }
     }
 
-    // Monta o corpo do POST
     const profissionalId = searchParams.get('profissionalId');
     const payload = {
       lojaId: Number(lojaId),
@@ -117,7 +110,6 @@ export default function PublicConfirmar() {
     try {
       const resp = await api.post("/public/agendamentos/criar", payload);
       if (resp.data.agendamentoId) {
-        // Formatar data e hora para exibição
         const dataHoraObj = new Date(dataHora);
         const dataFormatada = dataHoraObj.toLocaleDateString('pt-BR', {
           weekday: 'long',
@@ -127,7 +119,6 @@ export default function PublicConfirmar() {
         });
         const horaFormatada = dataHora.split("T")[1].substring(0, 5);
 
-        // Navegar para página de sucesso com dados
         navigate("/public/sucesso", {
           state: {
             lojaId: lojaId,
@@ -148,7 +139,10 @@ export default function PublicConfirmar() {
   if (carregando) {
     return (
       <div className="public-container">
-        <div className="loading">⏳ Carregando...</div>
+        <div className="loading-public">
+          <div className="loading-icon-public">⏳</div>
+          <p>Carregando...</p>
+        </div>
       </div>
     );
   }
@@ -163,7 +157,6 @@ export default function PublicConfirmar() {
     );
   }
 
-  // Formatar data e hora
   const dataHoraObj = new Date(dataHora);
   const dataFormatada = dataHoraObj.toLocaleDateString('pt-BR', {
     weekday: 'long',
@@ -190,77 +183,56 @@ export default function PublicConfirmar() {
         </div>
 
         {/* RESUMO DO AGENDAMENTO */}
-        <div style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          padding: '30px',
-          borderRadius: '16px',
-          color: 'white',
-          marginBottom: '24px',
-          boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)'
-        }}>
-          <h2 style={{ 
-            color: 'white', 
-            fontSize: '24px', 
-            marginBottom: '20px',
-            textAlign: 'center'
-          }}>
-            ✨ Resumo do Agendamento
-          </h2>
+        <div className="resumo-agendamento">
+          <h3>✨ Resumo do Agendamento</h3>
 
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.15)',
-            borderRadius: '12px',
-            padding: '20px',
-            backdropFilter: 'blur(10px)'
-          }}>
-            {servico && (
-              <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>Serviço</div>
-                <div style={{ fontSize: '18px', fontWeight: '600' }}>{servico.nome}</div>
-                {servico.preco && (
-                  <div style={{ fontSize: '16px', marginTop: '6px' }}>
-                    💰 R$ {servico.preco.toFixed(2)}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {profissional && (
-              <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.2)' }}>
-                <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>Profissional</div>
-                <div style={{ fontSize: '16px', fontWeight: '600' }}>👤 {profissional.nome}</div>
-              </div>
-            )}
-
-            <div style={{ marginBottom: '12px' }}>
-              <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>📅 Data</div>
-              <div style={{ fontSize: '16px', fontWeight: '600', textTransform: 'capitalize' }}>
-                {dataFormatada}
-              </div>
+          {servico && (
+            <div className="resumo-item">
+              <span className="resumo-label">Serviço</span>
+              <span className="resumo-value">
+                {servico.nome}
+                {servico.preco && ` • R$ ${servico.preco.toFixed(2)}`}
+              </span>
             </div>
+          )}
 
-            <div>
-              <div style={{ fontSize: '14px', opacity: 0.9, marginBottom: '6px' }}>🕐 Horário</div>
-              <div style={{ fontSize: '20px', fontWeight: '700' }}>{horaFormatada}</div>
+          {profissional && (
+            <div className="resumo-item">
+              <span className="resumo-label">Profissional</span>
+              <span className="resumo-value">👤 {profissional.nome}</span>
             </div>
+          )}
+
+          <div className="resumo-item">
+            <span className="resumo-label">📅 Data</span>
+            <span className="resumo-value" style={{ textTransform: 'capitalize' }}>
+              {dataFormatada}
+            </span>
+          </div>
+
+          <div className="resumo-item">
+            <span className="resumo-label">🕐 Horário</span>
+            <span className="resumo-value">{horaFormatada}</span>
           </div>
         </div>
 
-        {/* CARD DO FORMULÁRIO */}
+        {/* FORMULÁRIO */}
         <div className="public-card">
           <h2>📝 Seus Dados</h2>
-          <p style={{ color: '#777', marginBottom: '30px' }}>
+          <p style={{ color: '#6b7280', marginBottom: '24px' }}>
             Preencha suas informações para confirmar o agendamento
           </p>
 
-          <form onSubmit={confirmarAgendamento} className="form-public">
+          <form onSubmit={confirmarAgendamento}>
 
-            {/* Nome */}
             {loja.mostrarNome && (
               <div className="form-group-public">
-                <label>👤 Nome completo {loja.obrigarNome && '*'}</label>
+                <label className="form-label-public">
+                  👤 Nome completo {loja.obrigarNome && <span className="required">*</span>}
+                </label>
                 <input
                   type="text"
+                  className="form-input-public"
                   placeholder="Digite seu nome"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
@@ -269,12 +241,14 @@ export default function PublicConfirmar() {
               </div>
             )}
 
-            {/* Telefone */}
             {loja.mostrarTelefone && (
               <div className="form-group-public">
-                <label>📱 Telefone {loja.obrigarTelefone && '*'}</label>
+                <label className="form-label-public">
+                  📱 Telefone {loja.obrigarTelefone && <span className="required">*</span>}
+                </label>
                 <input
                   type="tel"
+                  className="form-input-public"
                   placeholder="(00) 00000-0000"
                   value={telefone}
                   onChange={(e) => setTelefone(e.target.value)}
@@ -283,12 +257,14 @@ export default function PublicConfirmar() {
               </div>
             )}
 
-            {/* Email */}
             {loja.mostrarEmail && (
               <div className="form-group-public">
-                <label>📧 E-mail {loja.obrigarEmail && '*'}</label>
+                <label className="form-label-public">
+                  📧 E-mail {loja.obrigarEmail && <span className="required">*</span>}
+                </label>
                 <input
                   type="email"
+                  className="form-input-public"
                   placeholder="seu@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -297,11 +273,11 @@ export default function PublicConfirmar() {
               </div>
             )}
 
-            {/* Observações */}
             {loja.mostrarObservacoes && (
               <div className="form-group-public">
-                <label>💬 Observações (opcional)</label>
+                <label className="form-label-public">💬 Observações (opcional)</label>
                 <textarea
+                  className="form-input-public"
                   placeholder="Alguma informação adicional que gostaria de compartilhar?"
                   value={observacoes}
                   onChange={(e) => setObservacoes(e.target.value)}
@@ -310,28 +286,22 @@ export default function PublicConfirmar() {
               </div>
             )}
 
-            {/* CAMPOS PERSONALIZADOS */}
             {camposPersonalizados.length > 0 && (
               <>
-                <h3 style={{ 
-                  marginTop: '30px', 
-                  marginBottom: '20px',
-                  fontSize: '18px',
-                  color: '#333'
-                }}>
+                <h3 style={{ marginTop: '24px', marginBottom: '16px', fontSize: '16px', fontWeight: '600', color: '#374151' }}>
                   ℹ️ Informações Adicionais
                 </h3>
 
                 {camposPersonalizados.map((campo) => (
                   <div key={campo.id} className="form-group-public">
-                    <label>
+                    <label className="form-label-public">
                       {campo.pergunta}
-                      {campo.obrigatorio && <span style={{ color: '#f44336', marginLeft: '4px' }}>*</span>}
+                      {campo.obrigatorio && <span className="required">*</span>}
                     </label>
 
-                    {/* Sim/Não */}
                     {campo.tipoResposta === "sim_nao" && (
                       <select
+                        className="form-input-public"
                         value={respostas[campo.id] || ""}
                         onChange={(e) => handleResposta(campo.id, e.target.value)}
                         required={campo.obrigatorio}
@@ -342,20 +312,20 @@ export default function PublicConfirmar() {
                       </select>
                     )}
 
-                    {/* Número */}
                     {campo.tipoResposta === "numero" && (
                       <input
                         type="number"
+                        className="form-input-public"
                         value={respostas[campo.id] || ""}
                         onChange={(e) => handleResposta(campo.id, e.target.value)}
                         required={campo.obrigatorio}
                       />
                     )}
 
-                    {/* Texto */}
                     {(campo.tipoResposta === "texto" || !campo.tipoResposta) && (
                       <input
                         type="text"
+                        className="form-input-public"
                         placeholder="Digite sua resposta"
                         value={respostas[campo.id] || ""}
                         onChange={(e) => handleResposta(campo.id, e.target.value)}
@@ -367,26 +337,26 @@ export default function PublicConfirmar() {
               </>
             )}
 
-            {/* MENSAGEM DE ERRO */}
             {erro && (
-              <div className="erro-mensagem" style={{ marginTop: '20px' }}>
+              <div style={{ 
+                padding: '12px',
+                background: '#fef2f2',
+                border: '1px solid #ef4444',
+                borderRadius: '8px',
+                color: '#ef4444',
+                fontSize: '14px',
+                marginTop: '16px'
+              }}>
                 ⚠️ {erro}
               </div>
             )}
 
-            {/* BOTÕES */}
-            <div style={{ 
-              display: 'flex', 
-              gap: '12px', 
-              marginTop: '30px',
-              flexWrap: 'wrap'
-            }}>
+            <div style={{ display: 'flex', gap: '12px', marginTop: '24px', flexWrap: 'wrap' }}>
               <button
                 type="button"
-                className="btn-voltar"
+                className="btn-secondary-public"
                 onClick={() => navigate(-1)}
                 disabled={enviando}
-                style={{ flex: '1', minWidth: '200px' }}
               >
                 ← Voltar
               </button>
@@ -395,7 +365,6 @@ export default function PublicConfirmar() {
                 type="submit"
                 className="btn-public"
                 disabled={enviando}
-                style={{ flex: '2', minWidth: '200px' }}
               >
                 {enviando ? '⏳ Confirmando...' : '✅ Confirmar Agendamento'}
               </button>
@@ -403,18 +372,16 @@ export default function PublicConfirmar() {
           </form>
         </div>
 
-        {/* INFORMAÇÕES */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: '#f9fafb',
           padding: '16px',
-          borderRadius: '12px',
+          borderRadius: '8px',
           textAlign: 'center',
           fontSize: '13px',
-          color: '#666'
+          color: '#6b7280',
+          border: '1px solid #e5e7eb'
         }}>
-          <p style={{ margin: 0 }}>
-            🔒 Seus dados estão seguros. Após confirmar, você receberá um resumo do agendamento.
-          </p>
+          🔒 Seus dados estão seguros. Após confirmar, você receberá um resumo do agendamento.
         </div>
       </div>
     </div>
