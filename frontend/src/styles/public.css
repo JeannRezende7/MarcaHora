@@ -169,10 +169,11 @@
 }
 
 /* ======================================
-   Calendário
+/* ======================================
+   Calendário - Responsivo e Maior
 ======================================== */
 .calendario-container {
-  margin-bottom: 24px;
+  margin: 24px 0;
 }
 
 .calendario-header {
@@ -184,7 +185,7 @@
 }
 
 .calendario-mes {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: #111827;
   flex: 1;
@@ -192,8 +193,8 @@
 }
 
 .btn-nav-calendar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: white;
@@ -204,11 +205,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .btn-nav-calendar:hover {
   background: #f9fafb;
   border-color: #667eea;
+  color: #667eea;
 }
 
 .calendario-grid {
@@ -219,10 +222,10 @@
 
 .dia-semana {
   text-align: center;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #6b7280;
-  padding: 8px 0;
+  padding: 12px 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -233,17 +236,19 @@
   align-items: center;
   justify-content: center;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 10px;
   background: white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  min-height: 50px;
 }
 
 .dia-mes:hover {
   border-color: #667eea;
   background: #f9fafb;
+  transform: scale(1.05);
 }
 
 .dia-mes.selected {
@@ -251,6 +256,7 @@
   color: white;
   border-color: #667eea;
   font-weight: 600;
+  transform: scale(1.08);
 }
 
 .dia-mes.disabled {
@@ -263,24 +269,110 @@
 .dia-mes.disabled:hover {
   background: #f9fafb;
   border-color: #f3f4f6;
+  transform: none;
 }
 
 .dia-mes.outro-mes {
   color: #d1d5db;
 }
 
-/* ======================================
-   Horários
-======================================== */
+/* ===================================
+   RESPONSIVO - Desktop Grande
+===================================== */
+@media (min-width: 1024px) {
+  .calendario-grid {
+    gap: 12px;
+  }
+  
+  .dia-mes {
+    min-height: 60px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+  
+  .dia-semana {
+    font-size: 15px;
+    padding: 14px 0;
+  }
+  
+  .calendario-mes {
+    font-size: 22px;
+  }
+}
+
+/* ===================================
+   RESPONSIVO - Tablet
+===================================== */
+@media (max-width: 768px) {
+  .calendario-grid {
+    gap: 6px;
+  }
+  
+  .dia-mes {
+    min-height: 44px;
+    font-size: 15px;
+    border-radius: 8px;
+  }
+  
+  .dia-semana {
+    font-size: 13px;
+    padding: 10px 0;
+  }
+  
+  .calendario-mes {
+    font-size: 18px;
+  }
+  
+  .btn-nav-calendar {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
+/* ===================================
+   RESPONSIVO - Mobile
+===================================== */
+@media (max-width: 480px) {
+  .calendario-container {
+    margin: 20px 0;
+  }
+  
+  .calendario-grid {
+    gap: 4px;
+  }
+  
+  .dia-mes {
+    min-height: 40px;
+    font-size: 14px;
+    border-radius: 6px;
+  }
+  
+  .dia-semana {
+    font-size: 11px;
+    padding: 8px 0;
+  }
+  
+  .calendario-mes {
+    font-size: 16px;
+  }
+  
+  .btn-nav-calendar {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+}
+
 .horarios-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 16px;
   margin-bottom: 24px;
 }
 
 .horario-slot {
-  padding: 12px;
+  padding: 14px 16px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: white;
@@ -597,8 +689,8 @@ textarea.form-input-public {
   }
 
   .horarios-grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
+    gap: 12px;
   }
 
   .stepper {
@@ -637,6 +729,7 @@ textarea.form-input-public {
 
   .horarios-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 }
 
@@ -675,4 +768,34 @@ textarea.form-input-public {
   color: #ef4444;
   margin-left: 4px;
   display: inline !important;
+}
+
+/* Botão Hoje */
+/* Container do calendário */
+.calendario-container {
+  margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-hoje {
+  padding: 8px 24px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #667eea;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-hoje:hover {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
 }

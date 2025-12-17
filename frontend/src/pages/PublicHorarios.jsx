@@ -14,35 +14,84 @@ export default function PublicHorarios() {
   const [profissionais, setProfissionais] = useState([]);
   const [profissionalSelecionado, setProfissionalSelecionado] = useState(null);
 
-  // Inicializa a data com o parâmetro da URL ou com hoje
   const dataParam = searchParams.get('data');
   const dataInicial = dataParam ? new Date(dataParam + 'T00:00:00') : new Date();
   
-  const [data, setData] = useState(dataInicial);
+  const [mesAtual, setMesAtual] = useState(new Date(dataInicial.getFullYear(), dataInicial.getMonth(), 1));
+  const [dataSelecionada, setDataSelecionada] = useState(dataInicial);
   const [horarios, setHorarios] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [carregandoHorarios, setCarregandoHorarios] = useState(false);
 
-  // Converte para yyyy-MM-dd
   function formatISO(date) {
     return date.toISOString().split("T")[0];
   }
 
-  function addDays(dt, amount) {
-    const copy = new Date(dt);
-    copy.setDate(copy.getDate() + amount);
-    return copy;
+  function mesAnterior() {
+    setMesAtual(new Date(mesAtual.getFullYear(), mesAtual.getMonth() - 1, 1));
   }
 
-  // Formata data para exibição
-  function formatarData(date) {
-    const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-    const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+  function proximoMes() {
+    setMesAtual(new Date(mesAtual.getFullYear(), mesAtual.getMonth() + 1, 1));
+  }
+
+  function formatarMesAno(date) {
+    const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    return `${meses[date.getMonth()]} ${date.getFullYear()}`;
+  }
+
+  function gerarDiasDoMes(mes) {
+    const ano = mes.getFullYear();
+    const mesNum = mes.getMonth();
+    const primeiroDia = new Date(ano, mesNum, 1);
+    const ultimoDia = new Date(ano, mesNum + 1, 0);
     
-    return `${dias[date.getDay()]}, ${date.getDate()} de ${meses[date.getMonth()]}`;
+    const dias = [];
+    
+    // Dias do mês anterior para preencher
+    const diaSemanaInicio = primeiroDia.getDay();
+    for (let i = diaSemanaInicio - 1; i >= 0; i--) {
+      const dia = new Date(ano, mesNum, -i);
+      dias.push({ data: dia, outroMes: true });
+    }
+    
+    // Dias do mês atual
+    for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
+      dias.push({ data: new Date(ano, mesNum, dia), outroMes: false });
+    }
+    
+    // Dias do próximo mês para completar
+    const diasRestantes = 42 - dias.length;
+    for (let i = 1; i <= diasRestantes; i++) {
+      dias.push({ data: new Date(ano, mesNum + 1, i), outroMes: true });
+    }
+    
+    return dias;
   }
 
-  // Carregar dados da loja + serviço (se houver)
+  function isDiaPassado(date) {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    return date < hoje;
+  }
+
+  function diaPermitido(date) {
+    const dow = date.getDay();
+    const mapa = { 0: 7, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6 };
+    const dia = mapa[dow];
+
+    if (!loja.diasFuncionamento || loja.diasFuncionamento.length === 0)
+      return true;
+
+    return loja.diasFuncionamento.includes(String(dia));
+  }
+
+  function isMesmaData(d1, d2) {
+    return d1.getFullYear() === d2.getFullYear() &&
+           d1.getMonth() === d2.getMonth() &&
+           d1.getDate() === d2.getDate();
+  }
+
   useEffect(() => {
     async function carregar() {
       try {
@@ -70,7 +119,6 @@ export default function PublicHorarios() {
     carregar();
   }, [lojaId, servicoId]);
 
-  // Buscar horarios do dia
   async function carregarHorarios(dia) {
     if (!loja) return;
 
@@ -81,7 +129,6 @@ export default function PublicHorarios() {
       data: formatISO(dia)
     };
 
-    // Só envia servicoId se a loja usa serviços E o servicoId não é 0
     if (loja.usaServicos && servicoId && servicoId !== "0") {
       params.servicoId = servicoId;
     }
@@ -90,11 +137,8 @@ export default function PublicHorarios() {
       params.profissionalId = profissionalSelecionado;
     }
 
-    console.log("Buscando horários com params:", params);
-
     try {
       const resp = await api.get("/public/agendamentos/horarios", { params });
-      console.log("Resposta do backend:", resp.data);
       setHorarios(resp.data.horarios || []);
     } catch (e) {
       console.error("Erro ao buscar horários", e);
@@ -104,15 +148,39 @@ export default function PublicHorarios() {
     }
   }
 
-  // Recarregar horários quando mudar data ou profissional
   useEffect(() => {
-    if (loja) carregarHorarios(data);
-  }, [data, profissionalSelecionado, loja]);
+    if (loja && dataSelecionada) carregarHorarios(dataSelecionada);
+  }, [dataSelecionada, profissionalSelecionado, loja]);
+
+  function selecionarDia(diaObj) {
+    if (isDiaPassado(diaObj.data) || !diaPermitido(diaObj.data)) return;
+    setDataSelecionada(diaObj.data);
+  }
+
+  function selecionarHorario(horarioStr) {
+    const dataISO = formatISO(dataSelecionada);
+    const dataHoraCompleta = `${dataISO}T${horarioStr}`;
+    
+    const params = new URLSearchParams();
+    if (profissionalSelecionado) {
+      params.set('profissionalId', profissionalSelecionado);
+    }
+    
+    const query = params.toString();
+    const url = query 
+      ? `/public/confirmar/${lojaId}/${servicoId}/${encodeURIComponent(dataHoraCompleta)}?${query}`
+      : `/public/confirmar/${lojaId}/${servicoId}/${encodeURIComponent(dataHoraCompleta)}`;
+    
+    navigate(url);
+  }
 
   if (carregando) {
     return (
       <div className="public-container">
-        <div className="loading">⏳ Carregando...</div>
+        <div className="loading-public">
+          <div className="loading-icon-public">⏳</div>
+          <p>Carregando...</p>
+        </div>
       </div>
     );
   }
@@ -127,38 +195,7 @@ export default function PublicHorarios() {
     );
   }
 
-  // Verificar dia permitido
-  function diaPermitido(date) {
-    const dow = date.getDay(); // 0 = domingo
-    const mapa = { 0: 7, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6 };
-    const dia = mapa[dow];
-
-    if (!loja.diasFuncionamento || loja.diasFuncionamento.length === 0)
-      return true;
-
-    return loja.diasFuncionamento.includes(String(dia));
-  }
-
-  // Formatar horário para exibição e criar datetime completo
-  function selecionarHorario(horarioStr) {
-    // horarioStr vem como "14:30" do backend
-    // Precisamos criar o datetime completo: "2025-12-10T14:30"
-    const dataISO = formatISO(data);
-    const dataHoraCompleta = `${dataISO}T${horarioStr}`;
-    
-    // Passa o profissional se houver selecionado
-    const params = new URLSearchParams();
-    if (profissionalSelecionado) {
-      params.set('profissionalId', profissionalSelecionado);
-    }
-    
-    const query = params.toString();
-    const url = query 
-      ? `/public/confirmar/${lojaId}/${servicoId}/${encodeURIComponent(dataHoraCompleta)}?${query}`
-      : `/public/confirmar/${lojaId}/${servicoId}/${encodeURIComponent(dataHoraCompleta)}`;
-    
-    navigate(url);
-  }
+  const diasDoMes = gerarDiasDoMes(mesAtual);
 
   return (
     <div className="public-container">
@@ -179,8 +216,7 @@ export default function PublicHorarios() {
         {/* CARD PRINCIPAL */}
         <div className="public-card">
           
-          {/* INFORMAÇÕES DO SERVIÇO */}
-          {/* INFORMAÇÕES DO SERVIÇO */}
+          {/* INFO DO SERVIÇO */}
           {servico && (
             <div className="servico-info-card">
               <h2>✨ {servico.nome || servico.descricao}</h2>
@@ -195,17 +231,16 @@ export default function PublicHorarios() {
             </div>
           )}
 
-          {/* TÍTULO */}
-          <h2>📅 Escolha o Horário</h2>
+          <h2>📅 Escolha a Data e Horário</h2>
 
-          {/* PROFISSIONAIS */}
+          {/* SELECT DE PROFISSIONAL */}
           {loja.usaProfissionais && profissionais.length > 0 && (
             <div className="form-group-public">
-              <label>👤 Profissional</label>
+              <label className="form-label-public">👤 Profissional</label>
               <select
+                className="form-input-public"
                 value={profissionalSelecionado || ""}
                 onChange={(e) => setProfissionalSelecionado(e.target.value)}
-                className="form-group-public select"
               >
                 <option value="">Selecione um profissional</option>
                 {profissionais.map((p) => (
@@ -217,142 +252,66 @@ export default function PublicHorarios() {
             </div>
           )}
 
-          {/* NAVEGAÇÃO DE DATA */}
-          <div className="calendario-header">
-            <div className="calendario-mes">
-              {formatarData(data)}
+          {/* CALENDÁRIO */}
+          <div className="calendario-container">
+            <div className="calendario-header">
+              <button className="btn-nav-calendar" onClick={mesAnterior}>◀</button>
+              <div className="calendario-mes">{formatarMesAno(mesAtual)}</div>
+              <button className="btn-nav-calendar" onClick={proximoMes}>▶</button>
             </div>
-            <div className="calendario-nav">
-              <button 
-                className="btn-nav" 
-                onClick={() => setData(addDays(data, -1))}
-                title="Dia anterior"
-                style={{
-                  background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
-                  border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
-                  color: loja.corPrimaria || '#667eea'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = loja.corPrimaria || '#667eea';
-                  e.currentTarget.style.color = 'white';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
-                  e.currentTarget.style.color = loja.corPrimaria || '#667eea';
-                }}
-              >
-                ◀
-              </button>
-              <button 
-                className="btn-nav"
-                onClick={() => setData(new Date())}
-                title="Hoje"
-                style={{
-                  background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
-                  border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
-                  color: loja.corPrimaria || '#667eea'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = loja.corPrimaria || '#667eea';
-                  e.currentTarget.style.color = 'white';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
-                  e.currentTarget.style.color = loja.corPrimaria || '#667eea';
-                }}
-              >
-                •
-              </button>
-              <button 
-                className="btn-nav"
-                onClick={() => setData(addDays(data, 1))}
-                title="Próximo dia"
-                style={{
-                  background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
-                  border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
-                  color: loja.corPrimaria || '#667eea'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = loja.corPrimaria || '#667eea';
-                  e.currentTarget.style.color = 'white';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
-                  e.currentTarget.style.color = loja.corPrimaria || '#667eea';
-                }}
-              >
-                ▶
-              </button>
+
+            <div className="calendario-grid">
+              {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(dia => (
+                <div key={dia} className="dia-semana">{dia}</div>
+              ))}
+              
+              {diasDoMes.map((diaObj, idx) => {
+                const isPassado = isDiaPassado(diaObj.data);
+                const isPermitido = diaPermitido(diaObj.data);
+                const isSelecionado = isMesmaData(diaObj.data, dataSelecionada);
+                
+                let classes = 'dia-mes';
+                if (diaObj.outroMes) classes += ' outro-mes';
+                if (isSelecionado) classes += ' selected';
+                if (isPassado || !isPermitido) classes += ' disabled';
+
+                return (
+                  <div
+                    key={idx}
+                    className={classes}
+                    onClick={() => selecionarDia(diaObj)}
+                  >
+                    {diaObj.data.getDate()}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* ALERTA DIA FECHADO */}
-          {!diaPermitido(data) && (
-            <div className="erro-mensagem">
-              🔒 A loja está fechada neste dia. Por favor, escolha outra data.
-            </div>
-          )}
-
-          {/* HORÁRIOS DISPONÍVEIS */}
-          {diaPermitido(data) && (
+          {/* HORÁRIOS */}
+          {dataSelecionada && diaPermitido(dataSelecionada) && !isDiaPassado(dataSelecionada) && (
             <>
-              <h3 style={{ marginTop: '30px', marginBottom: '20px' }}>
+              <h3 style={{ marginTop: '24px', marginBottom: '16px', fontSize: '18px', fontWeight: '600' }}>
                 🕐 Horários Disponíveis
               </h3>
 
               {carregandoHorarios ? (
-                <div style={{
-                  background: '#f5f6fa',
-                  padding: '40px',
-                  borderRadius: '12px',
-                  textAlign: 'center',
-                  color: '#999'
-                }}>
-                  <div style={{ fontSize: '32px', marginBottom: '16px' }}>⏳</div>
-                  <p style={{ fontSize: '16px', margin: 0 }}>
-                    Carregando horários...
-                  </p>
+                <div className="loading-public">
+                  <div className="loading-icon-public">⏳</div>
+                  <p>Carregando horários...</p>
                 </div>
               ) : horarios.length === 0 ? (
-                <div style={{
-                  background: '#f5f6fa',
-                  padding: '40px',
-                  borderRadius: '12px',
-                  textAlign: 'center',
-                  color: '#999'
-                }}>
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>📭</div>
-                  <p style={{ fontSize: '16px', margin: 0 }}>
-                    Nenhum horário disponível para esta data.
-                  </p>
-                  <p style={{ fontSize: '14px', marginTop: '8px', color: '#bbb' }}>
-                    Tente outro dia ou entre em contato conosco.
-                  </p>
+                <div className="empty-state-public">
+                  <div className="empty-icon-public">📭</div>
+                  <p>Nenhum horário disponível para esta data.</p>
                 </div>
               ) : (
                 <div className="horarios-grid">
                   {horarios.map((horarioStr, idx) => (
                     <button
                       key={idx}
-                      className="horario-option"
+                      className="horario-slot"
                       onClick={() => selecionarHorario(horarioStr)}
-                      style={{
-                        background: loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3',
-                        border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
-                        color: '#333'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = loja.corPrimaria || '#667eea';
-                        e.currentTarget.style.border = `2px solid ${loja.corPrimaria || '#667eea'}`;
-                        e.currentTarget.style.color = 'white';
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}20` : '#e8e9f3';
-                        e.currentTarget.style.border = `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`;
-                        e.currentTarget.style.color = '#333';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }}
                     >
                       {horarioStr}
                     </button>
@@ -364,37 +323,24 @@ export default function PublicHorarios() {
 
           {/* BOTÃO VOLTAR */}
           <button 
-            className="btn-voltar" 
+            className="btn-secondary-public"
             onClick={() => navigate(`/public/loja/${lojaId}`)}
-            style={{ 
-              marginTop: '30px',
-              background: 'transparent',
-              border: `2px solid ${loja.corPrimaria ? `${loja.corPrimaria}50` : '#e0e0e0'}`,
-              color: loja.corPrimaria || '#667eea'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = loja.corPrimaria ? `${loja.corPrimaria}10` : '#f5f6fa';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent';
-            }}
           >
             ← Voltar
           </button>
         </div>
 
-        {/* INFORMAÇÕES ADICIONAIS */}
+        {/* INFO RODAPÉ */}
         <div style={{
-          background: 'rgba(255, 255, 255, 0.9)',
-          padding: '20px',
-          borderRadius: '12px',
+          background: '#f9fafb',
+          padding: '16px',
+          borderRadius: '8px',
           textAlign: 'center',
           fontSize: '14px',
-          color: '#666'
+          color: '#6b7280',
+          border: '1px solid #e5e7eb'
         }}>
-          <p style={{ margin: 0 }}>
-            💡 Após escolher o horário, você confirmará seus dados e finalizará o agendamento.
-          </p>
+          💡 Selecione uma data no calendário e depois escolha o horário desejado.
         </div>
       </div>
     </div>

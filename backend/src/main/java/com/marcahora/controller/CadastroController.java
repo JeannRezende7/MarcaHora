@@ -5,6 +5,7 @@ import com.marcahora.model.Usuario;
 import com.marcahora.repository.LojaRepository;
 import com.marcahora.repository.UsuarioRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -15,10 +16,12 @@ public class CadastroController {
 
     private final LojaRepository lojaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CadastroController(LojaRepository lojaRepository, UsuarioRepository usuarioRepository) {
+    public CadastroController(LojaRepository lojaRepository, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.lojaRepository = lojaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/loja")
@@ -72,7 +75,7 @@ public class CadastroController {
         Usuario usuario = new Usuario();
         usuario.setNome("Admin " + lojaSalva.getNome());
         usuario.setEmail(email);
-        usuario.setSenha(senha);
+        usuario.setSenha(passwordEncoder.encode(senha)); // ✅ CRIPTOGRAFADO
         usuario.setLoja(lojaSalva);
 
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
