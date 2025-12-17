@@ -3,18 +3,22 @@ package com.marcahora.controller;
 import com.marcahora.model.Usuario;
 import com.marcahora.repository.UsuarioRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UsuarioRepository usuarioRepository) {
+    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -22,15 +26,25 @@ public class AuthController {
         String email = body.get("email");
         String senha = body.get("senha");
 
-        return usuarioRepository.findByEmailAndSenha(email, senha)
-                .map(usuario -> ResponseEntity.ok(Map.of(
-                        "id", usuario.getId(),
-                        "nome", usuario.getNome(),
-                        "email", usuario.getEmail(),
-                        "lojaId", usuario.getLoja().getId(),
-                        "lojaNome", usuario.getLoja().getNome()
-                )))
-                .orElseGet(() -> ResponseEntity.status(401)
-                        .body(Map.of("erro", "Credenciais inválidas")));
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
+        
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.status(401).body(Map.of("erro", "Credenciais inválidas"));
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        
+        // ✅ Compara senha criptografada
+        if (!passwordEncoder.matches(senha, usuario.getSenha())) {
+            return ResponseEntity.status(401).body(Map.of("erro", "Credenciais inválidas"));
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "id", usuario.getId(),
+                "nome", usuario.getNome(),
+                "email", usuario.getEmail(),
+                "lojaId", usuario.getLoja().getId(),
+                "lojaNome", usuario.getLoja().getNome()
+        ));
     }
 }
